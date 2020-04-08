@@ -8,7 +8,7 @@ With this app you can browse filimo, search and **download** items!
 
 ### Note
 
-You must create account in [filimo](https://www.filimo.com/) and buy package to use this app
+You must create account in [filimo](https://www.filimo.com/) and buy subscription package to use this app
 
 ### Dependencies
 
