@@ -26,3 +26,9 @@ You must create account in [filimo](https://www.filimo.com/) and buy package to 
 ### Thanks
 
 To [@NabiKAZ](https://github.com/NabiKAZ) for [filimo-downloader](https://github.com/NabiKAZ/filimo-downloader)
+
+### Support
+
+I spent huge amount of time for creating FilimoPlus<br />
+If you like my work please show your support by clicking on star button and share this repo with your friends<br />
+Thank you!
