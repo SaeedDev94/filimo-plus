@@ -1,0 +1,98 @@
+@import "bootstrap";
+
+@font-face {
+  font-family: 'IranSans';
+  src: url("assets/fonts/IranSans.woff2");
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'IranSans', serif;
+  font-size: 0.9rem;
+  background-color: #262626;
+  color: #FFFFFF;
+  direction: rtl;
+  text-align: right;
+}
+
+a {
+  color: #fdc13c!important;
+  text-decoration: none!important;
+  &:active, &:hover, &:visited, &:focus {
+    color: #fdc13c!important;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+@for $i from 5 through 0 {
+  h#{$i+1}, .h#{$i+1} {
+    font-size: (1.8rem - (0.2 * $i));
+  }
+}
+
+.body {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.match-parent {
+  width: 100%;
+  height: 100%;
+}
+
+.form-control {
+  font-size: 0.8rem;
+}
+
+.input-group-text {
+  font-size: 0.8rem;
+}
+
+.btn {
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.btn-lg {
+  font-size: 1rem;
+}
+
+.vertical-padding {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.horizontal-padding {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@keyframes rotateLogo {
+  0%, 3% {
+    transform-origin: center center;
+    transform: rotate(0deg);
+  }
+  30%, 36% {
+    transform-origin: center center;
+    transform: rotate(120deg);
+  }
+  63%, 69% {
+    transform-origin: center center;
+    transform: rotate(240deg);
+  }
+  100%, 97% {
+    transform-origin: center center;
+    transform: rotate(360deg);
+  }
+}

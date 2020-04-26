@@ -1,0 +1,10 @@
+<app-toolbar></app-toolbar>
+<div class="body vertical-padding" #scrollContainer>
+  <app-grid [includeTagLink]="false"
+            [item]="tag"></app-grid>
+  <app-infinite-scroll *ngIf="scrollContainer"
+                       [container]="scrollContainer"
+                       [disable]="infiniteScroll.disable"
+                       [callback]="infiniteScroll.callback"
+                       [(loading)]="infiniteScroll.loading"></app-infinite-scroll>
+</div>

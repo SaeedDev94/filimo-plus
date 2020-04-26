@@ -1,0 +1,77 @@
+@mixin radio() {
+  .mdc-form-field {
+    .mdc-radio {
+      &__background {
+        &:before {
+          background-color: #FFFFFF!important;
+        }
+      }
+      &__outer-circle {
+        border-color: #FFFFFF!important;
+      }
+      &__inner-circle {
+        border-color: #FFFFFF!important;
+      }
+      &__ripple {
+        &:before, &:after {
+          background-color: #FFFFFF!important;
+        }
+      }
+    }
+    label {
+      color: #FFFFFF;
+      margin-bottom: 0;
+    }
+  }
+}
+
+@mixin menu() {
+  .mdc-menu {
+    background-color: #262626!important;
+    .mdc-list {
+      font-family: 'IranSans', serif;
+      font-size: 1.0rem;
+      color: #FFFFFF!important;
+    }
+  }
+}
+
+@mixin dialog() {
+  .mdc-dialog {
+    z-index: 12;
+    &__surface {
+      background-color: #262626!important;
+    }
+    &__title {
+      font-family: 'IranSans', serif;
+      color: #FFFFFF!important;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    &__content {
+      font-family: 'IranSans', serif;
+      color: #FFFFFF!important;
+      font-size: 0.9rem;
+    }
+    &__actions {
+      button {
+        margin-left: 7px;
+        color: #FFFFFF;
+      }
+    }
+    &__scrim {
+      background-color: rgba(0, 0, 0, 0.5)!important;
+    }
+  }
+}
+
+@mixin snackbar() {
+  .mdc-snackbar {
+    direction: rtl;
+    text-align: right;
+    &__label {
+      font-family: 'IranSans', serif;
+      font-size: 0.8rem;
+    }
+  }
+}

@@ -1,0 +1,80 @@
+<section class="items-container horizontal-padding">
+  <div class="the-header">
+    <div class="float-right">
+      <h1 class="right-title">
+        <span>{{ item.title }}</span>
+      </h1>
+    </div>
+    <div class="float-left"
+         [routerLink]="'/tag/'+item.tag"
+         *ngIf="item.tag && includeTagLink">
+      <a class="left-link clickable">
+        <span>مشاهده همه</span>
+        <span>&nbsp;></span>
+      </a>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <ng-container *ngIf="homeSpecial">
+    <div class="the-body">
+      <div class="container-fluid">
+        <div class="row">
+          <ng-container *ngFor="let movie of item.list; let i = index">
+            <div class="the-col normal-margin-bottom col-lg-3 col-md-4 col-sm-6 col-6"
+                 *ngIf="(i < 12) || (i >= 12 && specialItemsShowMore)">
+              <div class="match-parent clickable"
+                   [routerLink]="'/movie/' + movie.id"
+                   [style.backgroundImage]="'url('+movie.image+')'">
+                <img [src]="movie.image" alt="" />
+                <div class="overlay-back"></div>
+                <div class="overlay-front">
+                  <div class="title">
+                    <span>{{ movie.title }}</span>
+                  </div>
+                  <div class="description">
+                    <span>{{ movie.description }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="the-footer">
+      <div class="float-right">
+        <a class="show-more clickable"
+           (click)="toggleSpecialItemsShowMore()">
+          <span>{{ specialItemsShowMore ? 'نمایش کمتر فیلم های ویژه امروز' : 'نمایش بیشتر فیلم های ویژه امروز' }}</span>
+        </a>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!homeSpecial">
+    <div class="the-body">
+      <div class="container-fluid">
+        <div class="row">
+          <ng-container *ngFor="let movie of item.list;">
+            <div class="the-col col-lg-1 col-md-2 col-sm-3 col-6">
+              <div class="match-parent clickable"
+                   [routerLink]="'/movie/' + movie.id"
+                   [style.backgroundImage]="'url('+movie.image+')'">
+                <img [src]="movie.image" alt="" />
+                <div class="overlay-back"></div>
+                <div class="overlay-front">
+                  <div class="description">
+                    <span>{{ movie.description }}</span>
+                  </div>
+                </div>
+                <div class="bottom-title" [title]="movie.title">
+                  <span>{{ movie.title }}</span>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>

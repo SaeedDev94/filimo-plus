@@ -1,0 +1,78 @@
+@use "@material/dialog/mdc-dialog";
+@import "../../mixin";
+
+@include dialog();
+
+.no-items-found {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 45%;
+  width: 100%;
+  text-align: center;
+}
+
+.container {
+  .row {
+    min-height: 215px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    &:first-child {
+      margin-top: 15px;
+    }
+    &:last-child {
+      margin-bottom: 15px;
+    }
+    //
+    &.disable {
+      opacity: 0.5;
+    }
+    //
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    &:last-child {
+      padding-bottom: 0;
+      border-bottom: unset;
+    }
+    //
+    .image {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+    //
+    .title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    //
+    .quality {
+      span {
+        &:first-child {
+          color: #fdc13c;
+        }
+      }
+    }
+    //
+    .dl-box {
+      a {
+        margin-left: 5px;
+        &:last-child {
+          margin-left: 0;
+        }
+      }
+      button {
+        min-width: 100px;
+      }
+    }
+    //
+    .progress {
+      margin-top: 15px;
+      direction: ltr;
+      .progress-bar {
+        user-select: none;
+      }
+    }
+  }
+}

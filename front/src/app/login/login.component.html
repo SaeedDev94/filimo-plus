@@ -1,0 +1,44 @@
+<div class="body text-center">
+  <div class="form-signin">
+    <img class="mb-4" src="assets/images/filimo_logo.svg" alt="" width="72" height="72" />
+    <ng-container *ngIf="step === 1">
+      <form [formGroup]="requestOtpForm"
+            (ngSubmit)="requestOtp()">
+        <h1 class="h6 mb-3 font-weight-normal">اگر در فیلیمو حساب کاربری دارید، وارد شوید:</h1>
+        <div class="input-group" dir="ltr">
+          <div class="input-group-prepend">
+            <span class="input-group-text">+98</span>
+          </div>
+          <input class="form-control"
+                 type="text"
+                 placeholder="Mobile"
+                 aria-label="Mobile"
+                 formControlName="mobile" />
+        </div>
+        <button class="mt-3 btn btn-lg btn-success btn-block" type="submit">ورود</button>
+      </form>
+    </ng-container>
+    <ng-container *ngIf="step === 2">
+      <form [formGroup]="verifyOtpForm"
+            (ngSubmit)="verifyOtp()">
+        <h1 class="h6 mb-3 font-weight-normal">کد فرستاده شده را وارد کنید:</h1>
+        <div class="input-group" dir="ltr">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <img src="assets/images/password.svg" alt="" width="24px" height="24px" />
+            </span>
+          </div>
+          <input class="form-control"
+                 type="text"
+                 placeholder="Code"
+                 aria-label="Code"
+                 formControlName="otp" />
+        </div>
+        <button class="mt-3 btn btn-lg btn-success btn-block" type="submit">ادامه</button>
+        <div class="back mt-3 text-right small">
+          <span (click)="firstStep()">بازگشت</span>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>

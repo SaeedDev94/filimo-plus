@@ -1,0 +1,46 @@
+.container {
+  .search-form {
+    min-height: auto!important;
+    span {
+      border-radius: 0 0.3rem 0.3rem 0;
+    }
+    input {
+      border-radius: 0.3rem 0 0 0.3rem;
+    }
+  }
+  .row {
+    min-height: 215px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    &:first-child {
+      margin-top: 15px;
+    }
+    &:last-child {
+      margin-bottom: 15px;
+    }
+    //
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    &:last-child {
+      padding-bottom: 0;
+      border-bottom: unset;
+    }
+    //
+    .image {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+    //
+    .title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    //
+    .description {
+      color: #b3b3b3;
+      line-height: 25px;
+    }
+  }
+}

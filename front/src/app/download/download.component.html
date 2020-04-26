@@ -1,0 +1,83 @@
+<app-toolbar></app-toolbar>
+<div class="body">
+  <div class="no-items-found"
+       *ngIf="items.length === 0">
+    <span>فیلمی پیدا نشد!!</span>
+  </div>
+  <div class="container"
+       *ngIf="items.length > 0">
+    <div class="row"
+         [class.disable]="item.deleted"
+         *ngFor="let item of items; let i = index">
+      <div class="col-2 text-center">
+        <img class="image"
+             [src]="item.image"
+             alt="Movie image" />
+      </div>
+      <div class="col-10 text-right">
+        <div class="title vertical-padding">
+          <span>{{ item.title }}</span>
+        </div>
+        <div class="quality vertical-padding">
+          <span>{{ item.quality }}</span>
+          <span>&nbsp;</span>
+          <span>{{ item.resolution }}</span>
+        </div>
+        <div class="dl-box vertical-padding">
+          <ng-container *ngIf="item.progress === 100">
+            <a [href]="baseUrl+item.movie" target="_blank">
+              <button type="button" class="btn btn-success">Movie</button>
+            </a>
+            <ng-container *ngIf="item.subtitle">
+              <a [href]="baseUrl+item.subtitle" target="_blank">
+                <button type="button" class="btn btn-success">Subtitle</button>
+              </a>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="item.progress !== 100">
+            <button class="btn btn-danger"
+                    type="button"
+                    (click)="openDialog(i)"
+                    [disabled]="item.deleted">Cancel</button>
+          </ng-container>
+        </div>
+        <div class="progress"
+             *ngIf="item.progress !== 100">
+          <div class="progress-bar bg-success"
+               [style.width]="item.progress + '%'"
+               role="progressbar">
+            <span>{{ item.progress + '%' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mdc-dialog" #dialogElement>
+  <div class="mdc-dialog__container">
+    <div class="mdc-dialog__surface"
+         role="alertdialog">
+      <h2 class="mdc-dialog__title" id="my-dialog-title">
+        <span>مطمئن هستید؟</span>
+      </h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        <span>آیا میخواهید دانلود</span>
+        <span>&nbsp;"{{ items[selectedIndex]?.title }}"&nbsp;</span>
+        <span>متوقف و حذف شود؟</span>
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button class="btn"
+                type="button"
+                (click)="closeDialog()">
+          <span>خیر</span>
+        </button>
+        <button class="btn"
+                type="button"
+                (click)="cancelDownload()">
+          <span>بله</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+  <div class="mdc-dialog__scrim"></div>
+</div>

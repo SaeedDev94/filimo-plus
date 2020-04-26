@@ -1,0 +1,15 @@
+<app-toolbar></app-toolbar>
+<div class="body vertical-padding" #scrollContainer>
+  <ng-container *ngIf="home.special">
+    <app-grid [homeSpecial]="true"
+              [item]="home.special"></app-grid>
+  </ng-container>
+  <ng-container *ngFor="let item of home.items">
+    <app-grid [item]="item"></app-grid>
+  </ng-container>
+  <app-infinite-scroll *ngIf="scrollContainer"
+                       [container]="scrollContainer"
+                       [disable]="infiniteScroll.disable"
+                       [callback]="infiniteScroll.callback"
+                       [(loading)]="infiniteScroll.loading"></app-infinite-scroll>
+</div>

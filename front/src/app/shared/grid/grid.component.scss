@@ -1,0 +1,116 @@
+.items-container {
+  margin-bottom: 15px;
+  .the-header {
+    margin-bottom: 10px;
+    .right-title {
+      font-size: 1.0rem;
+      font-weight: 700;
+      margin-bottom: 0;
+    }
+    .left-link {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  }
+  .the-body {
+    .row {
+      .the-col {
+        padding: 0 5px!important;
+        margin-bottom: 40px;
+        min-height: 100px;
+        &.normal-margin-bottom {
+          margin-bottom: 10px;
+        }
+        &:hover {
+          .match-parent {
+            .overlay {
+              &-back {
+                opacity: 1;
+              }
+              &-front {
+                opacity: 1;
+              }
+            }
+          }
+        }
+        .match-parent {
+          position: relative;
+          border-radius: 5px;
+          background-repeat: no-repeat;
+          background-size: cover;
+          img {
+            opacity: 0;
+          }
+          .bottom-title {
+            position: absolute;
+            right: 0;
+            bottom: -30px;
+            left: 0;
+            z-index: 1;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-align: right;
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .overlay {
+            &-back {
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              z-index: 1;
+              background-color: rgba(41, 41, 41, 0.7);
+              opacity: 0;
+              transition: opacity 0.1s;
+            }
+            &-front {
+              position: absolute;
+              right: 0;
+              left: 0;
+              bottom: 0;
+              z-index: 2;
+              opacity: 0;
+              transition: opacity 0.1s;
+              line-height: 25px;
+              text-align: right;
+              padding: 7px;
+              font-size: 0.8rem;
+              .title {
+                font-weight: 700;
+              }
+              .description {
+                margin-top: 5px;
+                font-size: 0.7rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .the-footer {
+    .show-more {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .items-container {
+    .the-body {
+      .row {
+        .the-col {
+          &.col-lg-1 {
+            flex: 0 0 12.5%;
+            max-width: 12.5%;
+          }
+        }
+      }
+    }
+  }
+}

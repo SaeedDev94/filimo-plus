@@ -1,0 +1,60 @@
+@use "@material/list/mdc-list";
+@use "@material/menu-surface/mdc-menu-surface";
+@use "@material/menu/mdc-menu";
+@use "@material/dialog/mdc-dialog";
+@import "../../../mixin";
+
+@include menu();
+@include dialog();
+
+.toolbar {
+  position: relative;
+  width: 100%;
+  height: 69px;
+  border-top: 3px solid #fdc13c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  .container-fluid {
+    height: 100%;
+    padding: 20px;
+    background-color: #262626;
+    .the-item {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 15px;
+      &:last-child {
+        margin-left: 0;
+      }
+      img {
+        height: 25px;
+      }
+    }
+  }
+  .dropdown-icon {
+    position: absolute;
+    z-index: 11;
+    top: 20px;
+    left: 20px;
+    img {
+      height: 25px;
+      transition: 0.1s;
+      &.rotate {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  .mdc-menu {
+    border-radius: 0 0 5px 0!important;
+    min-width: 168px;
+    .mdc-list {
+      .user {
+        .name {
+          font-weight: 600;
+          margin-bottom: 5px;
+        }
+        .mobile {
+          color: #b3b3b3;
+        }
+      }
+    }
+  }
+}

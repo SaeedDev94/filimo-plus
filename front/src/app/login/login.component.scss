@@ -1,0 +1,29 @@
+.body {
+  color: #262626;
+  background-image: url("/assets/images/login_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+    .form-control {
+      position: relative;
+      box-sizing: border-box;
+      height: auto;
+      padding: 10px;
+    }
+    .back {
+      span {
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+<app-toolbar></app-toolbar>
+<div class="body">
+  <div class="container">
+    <div class="row search-form"
+         [formGroup]="searchForm">
+      <div class="col-12">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">@</span>
+          </div>
+          <input class="form-control form-control-lg"
+                 type="text"
+                 placeholder="جستجو ..."
+                 aria-label="Search"
+                 formControlName="keyword" />
+        </div>
+      </div>
+    </div>
+    <div class="row clickable"
+         *ngFor="let item of items; let i = index"
+         [routerLink]="'/movie/'+item.id">
+      <div class="col-2 text-center">
+        <img class="image"
+             [src]="item.image"
+             alt="Movie image" />
+      </div>
+      <div class="col-10 text-right">
+        <div class="title vertical-padding">
+          <span>{{ item.title }}</span>
+        </div>
+        <div class="description vertical-padding">
+          <span>{{ item.description }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

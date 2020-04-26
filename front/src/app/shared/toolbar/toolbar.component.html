@@ -1,0 +1,67 @@
+<div class="toolbar">
+  <div class="container-fluid">
+    <div class="the-item clickable" routerLink="/home">
+      <img src="assets/images/logo.png" alt="logo" />
+    </div>
+    <div class="the-item clickable" routerLink="/download">
+      <img src="assets/images/download.svg" alt="download icon" />
+    </div>
+    <div class="the-item clickable" routerLink="/search">
+      <img src="assets/images/search.svg" alt="search icon" />
+    </div>
+  </div>
+  <ng-container *ngIf="menu">
+    <div class="dropdown-icon clickable"
+         (click)="toggleMenu()">
+      <img src="assets/images/down_arrow.svg"
+           alt="Dropdown icon"
+           [class.rotate]="menu.open" />
+    </div>
+  </ng-container>
+  <div class="mdc-menu mdc-menu-surface" #menuElement>
+    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+      <li class="mdc-list-item"
+          role="menuitem">
+        <div class="user">
+          <div class="name">
+            <span>{{ user?.name ? user.name : 'User_'+(user?.id ? user.id : 'xxxx') }}</span>
+          </div>
+          <div class="mobile">
+            <span>{{ user?.mobile ? user.mobile : '989xxxxxxxxx' }}</span>
+          </div>
+        </div>
+      </li>
+      <li class="mdc-list-item"
+          role="menuitem"
+          (click)="openDialog()">
+        <span class="mdc-list-item__text">خروج</span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="mdc-dialog" #dialogElement>
+  <div class="mdc-dialog__container">
+    <div class="mdc-dialog__surface"
+         role="alertdialog">
+      <h2 class="mdc-dialog__title" id="my-dialog-title">
+        <span>مطمئن هستید؟</span>
+      </h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        <span>آیا میخواهید از حساب کاربری خود خارج شوید؟</span>
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button class="btn"
+                type="button"
+                (click)="closeDialog()">
+          <span>خیر</span>
+        </button>
+        <button class="btn"
+                type="button"
+                (click)="logout()">
+          <span>بله</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+  <div class="mdc-dialog__scrim"></div>
+</div>

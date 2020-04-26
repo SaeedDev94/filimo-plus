@@ -1,0 +1,16 @@
+<router-outlet></router-outlet>
+<div class="loading"
+     [class.active]="isFullscreenLoadingLayoutVisible">
+  <div class="logo-container">
+    <img src="assets/images/filimo_logo.svg" alt="logo">
+  </div>
+</div>
+<div class="mdc-snackbar" #snackbar>
+  <div class="mdc-snackbar__surface">
+    <div class="mdc-snackbar__label"
+         role="status"
+         aria-live="polite">
+      <span>{{ snackbarText }}</span>
+    </div>
+  </div>
+</div>
