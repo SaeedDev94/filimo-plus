@@ -1,0 +1,77 @@
+<app-toolbar></app-toolbar>
+<div class="body">
+  <div class="top-section"
+       [style.backgroundImage]="'url('+movie.cover+')'">
+    <div class="overlay-back">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-auto col-md-auto col-sm-auto">
+            <img class="image" [src]="movie.image" alt="" />
+          </div>
+          <div class="col-lg-auto col-md-auto col-sm-auto text-right">
+            <div>
+              <h1 class="title">
+                <span>{{ movie.title }}</span>
+              </h1>
+            </div>
+            <div>
+              <span>{{ movie.director }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="hr"></div>
+        <div class="tools">
+          <div class="row"
+               [formGroup]="downloadForm">
+            <div class="col-md-10 col-sm-8">
+              <div class="mdc-form-field"
+                   *ngFor="let variant of movie.download.variants; let i = index">
+                <div class="mdc-radio">
+                  <input class="mdc-radio__native-control"
+                         [id]="'quality-'+i"
+                         type="radio"
+                         name="quality"
+                         aria-label=""
+                         formControlName="quality"
+                         [value]="i" />
+                  <div class="mdc-radio__background">
+                    <div class="mdc-radio__outer-circle"></div>
+                    <div class="mdc-radio__inner-circle"></div>
+                  </div>
+                  <div class="mdc-radio__ripple"></div>
+                </div>
+                <label class="clickable" [htmlFor]="'quality-'+i">{{ variant.quality + ' (' + variant.resolution + ')' }}</label>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-4 text-left">
+              <button type="button"
+                      class="btn btn-success"
+                      (click)="startDownload()">دانلود</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-section">
+    <div class="container">
+      <div class="description"
+           *ngFor="let description of movie.descriptions">
+        <div>
+          <h1 class="title">{{ description.title }}</h1>
+        </div>
+        <div class="text">
+          <span>{{ description.text }}</span>
+        </div>
+      </div>
+      <div class="series" *ngIf="movie.series.length">
+        <button type="button" class="btn btn-success"
+                *ngFor="let episode of movie.series"
+                [routerLink]="'/movie/'+episode.id">{{ episode.title }}</button>
+      </div>
+      <div class="suggestions">
+        <app-grid [item]="movie.suggestions"></app-grid>
+      </div>
+    </div>
+  </div>
+</div>

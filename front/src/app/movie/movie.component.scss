@@ -1,0 +1,64 @@
+@use "@material/form-field/mdc-form-field";
+@use "@material/radio/mdc-radio";
+@import "../../mixin";
+
+@include radio();
+
+.top-section {
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  .overlay-back {
+    background-color: rgba(0,0,0,.6);
+  }
+  .container {
+    padding-top: 80px;
+    .title {
+      margin-top: 10px;
+      margin-bottom: 30px;
+      font-size: 1.0rem;
+      font-weight: 500;
+    }
+    .image {
+      max-width: 225px;
+    }
+    .hr {
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.25);
+      margin-top: 40px;
+    }
+    .tools {
+      padding: 20px 0;
+      button {
+        padding: 8px 36px;
+        border-radius: 510px;
+      }
+      .mdc-form-field {
+        direction: ltr;
+      }
+    }
+  }
+}
+
+.content-section {
+  padding: 40px 0;
+  .description {
+    margin-bottom: 30px;
+    .title {
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+    .text {
+      color: #b3b3b3;
+      line-height: 25px;
+    }
+  }
+  .series {
+    button {
+      margin: 8px;
+    }
+  }
+  .suggestions {
+    margin-top: 30px;
+  }
+}
