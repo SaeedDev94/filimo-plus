@@ -71,7 +71,10 @@ const DomHelper = {
   },
   homeSpecial: (document) => {
     let data = null;
-    document.querySelectorAll('section.list-item.list-thumbplay').forEach((section) => {
+    document.querySelectorAll('section.list-item.list-thumbplay').forEach((section, index) => {
+      if (index !== 0) {
+        return;
+      }
       const head = DomHelper.listHead(section);
       data = {
         title: head.title,
@@ -91,9 +94,9 @@ const DomHelper = {
     data.title = titleElement ? titleElement.textContent.trim() : '';
     //
     data.descriptions = [];
-    document.querySelectorAll('.section-gallery .each-movie-desc-wrapper').forEach((container) => {
-      const descriptionTitleElement = container.querySelector('.title');
-      const descriptionTextElement = container.querySelector('.movie-desc');
+    document.querySelectorAll('.section-gallery .gallery_each-movie').forEach((container) => {
+      const descriptionTitleElement = container.querySelector('.gallery_each-movie_title');
+      const descriptionTextElement = container.querySelector('p');
       if (descriptionTitleElement && descriptionTextElement) {
         data.descriptions.push({
           title: descriptionTitleElement.textContent.trim(),
