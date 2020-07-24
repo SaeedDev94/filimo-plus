@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { exec } = require('child_process');
 
 const DownloadController = {
@@ -13,12 +14,12 @@ const DownloadController = {
       image: req.body.image || ''
     };
     //
-    let movieDir = `${process.cwd()}/movie`;
+    let movieDir = `${process.cwd()}${path.sep}movie`;
     if (!fs.existsSync(movieDir)) {
       fs.mkdirSync(movieDir);
     }
     //
-    if (fs.existsSync(`${movieDir}/dl.lock`)) {
+    if (fs.existsSync(`${movieDir}${path.sep}dl.lock`)) {
       return res.json({
         status: 406,
         success: false,
@@ -27,14 +28,14 @@ const DownloadController = {
       });
     }
     //
-    movieDir = `${movieDir}/${info.id}`;
+    movieDir = `${movieDir}${path.sep}${info.id}`;
     if (!fs.existsSync(movieDir)) {
       fs.mkdirSync(movieDir);
     }
-    const infoFile = `${movieDir}/info.json`;
-    const logFile = `${movieDir}/log.txt`;
-    const videoFile = `${movieDir}/${info.id}_${info.quality}.mp4`;
-    const subtitleFile = `${movieDir}/${info.id}.srt`;
+    const infoFile = `${movieDir}${path.sep}info.json`;
+    const logFile = `${movieDir}${path.sep}log.txt`;
+    const videoFile = `${movieDir}${path.sep}${info.id}_${info.quality}.mp4`;
+    const subtitleFile = `${movieDir}${path.sep}${info.id}.srt`;
     //
     fs.writeFile(infoFile, JSON.stringify(info), (error) => {
       if (error) {
@@ -68,7 +69,7 @@ const DownloadController = {
     }
     //
     if (process.platform === 'win32') {
-      exec(`start /B ${process.cwd()}/dl.bat "${link}" "${videoFile}" <nul >nul 2> "${logFile}"`, (error) => {
+      exec(`start /B ${process.cwd()}\\dl.bat "${link}" "${videoFile}" <nul >nul 2> "${logFile}"`, (error) => {
         if (error) {
           console.log(`Windows bat run error: ${error}`);
         }
@@ -89,7 +90,7 @@ const DownloadController = {
     });
   },
   list: (req, res) => {
-    const movieDir = `${process.cwd()}/movie`;
+    const movieDir = `${process.cwd()}${path.sep}movie`;
     if (!fs.existsSync(movieDir)) {
       return res.json({
         status: 200,
@@ -99,9 +100,9 @@ const DownloadController = {
       });
     }
     //
-    const movieSymlink = `${process.cwd()}/.tmp/public/movie`;
+    const movieSymlink = `${process.cwd()}${path.sep}.tmp${path.sep}public${path.sep}movie`;
     if (!fs.existsSync(movieSymlink)) {
-      fs.symlinkSync(`${process.cwd()}/movie`, movieSymlink);
+      fs.symlinkSync(movieDir, movieSymlink);
     }
     //
     const directories = fs.readdirSync(movieDir, {withFileTypes: true})
@@ -115,8 +116,8 @@ const DownloadController = {
   },
   cancel: (req, res) => {
     const id = req.body.id || 'Not_Exists';
-    const dlLock = `${process.cwd()}/movie/dl.lock`;
-    const movieDir = `${process.cwd()}/movie/${id}`;
+    const dlLock = `${process.cwd()}${path.sep}movie${path.sep}dl.lock`;
+    const movieDir = `${process.cwd()}${path.sep}movie${path.sep}${id}`;
     //
     if (fs.existsSync(dlLock)) {
       if (process.platform === 'win32') {
@@ -154,8 +155,8 @@ const DownloadController = {
   dataList: (movieDir, directories) => {
     const list = [];
     directories.forEach(dir => {
-      const infoFile = `${movieDir}/${dir.name}/info.json`;
-      const logFile = `${movieDir}/${dir.name}/log.txt`;
+      const infoFile = `${movieDir}${path.sep}${dir.name}${path.sep}info.json`;
+      const logFile = `${movieDir}${path.sep}${dir.name}${path.sep}log.txt`;
       if (fs.existsSync(infoFile) && fs.existsSync(logFile)) {
         const data = {};
         const infoText = fs.readFileSync(infoFile).toString();
