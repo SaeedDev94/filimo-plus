@@ -102,7 +102,15 @@ const DownloadController = {
     //
     const movieSymlink = `${process.cwd()}${path.sep}.tmp${path.sep}public${path.sep}movie`;
     if (!fs.existsSync(movieSymlink)) {
-      fs.symlinkSync(movieDir, movieSymlink);
+      try {
+        fs.symlinkSync(movieDir, movieSymlink);
+      } catch (unused) {
+        console.log(
+          `Can not create symlink: ${movieDir} -> ${movieSymlink}
+           Please check directory permission or run app with admin access
+          `
+        );
+      }
     }
     //
     const directories = fs.readdirSync(movieDir, {withFileTypes: true})
