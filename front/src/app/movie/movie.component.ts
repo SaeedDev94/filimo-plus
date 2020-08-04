@@ -50,6 +50,7 @@ export class MovieComponent implements OnInit {
       resolution: variant.resolution,
       subtitle: this.movie.download.subtitle,
       image: this.movie.image,
+      tracks: this.movie.download.tracks
     };
     const dlRequest = this.movieService.requestDownload(download).subscribe({
       next: (response) => {

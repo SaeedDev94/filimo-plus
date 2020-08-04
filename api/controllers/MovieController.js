@@ -84,26 +84,25 @@ const MovieController = {
       requestHeaders,
       responseType: 'text'
     });
-    const variants = [];
-    const variantMatches = [...streamFile.data.matchAll(/#([0-9]+(.*?))\n(.*)RESOLUTION=(.*)\n(.*)/g)];
-    variantMatches.forEach((variant) => {
-      variants.push({
+    const variants = [...streamFile.data.matchAll(/#([0-9]+(.*?))\n(.*)RESOLUTION=(.*)\n(.*)/g)].map((variant) => {
+      return {
         quality: variant[1] || '',
         resolution: variant[4] ? variant[4].split(',')[0] : '',
         link: variant[5] || ''
-      });
+      };
     });
+    const tracks = [...streamFile.data.matchAll(/GROUP-ID="audio"(.*)URI="(.*)"/g)].slice(0, 2).map(i => i[2]);
     //
     let subtitle = '';
-    const tracks = playerData.tracks || [];
-    tracks.forEach((track) => {
+    (playerData.tracks || []).forEach((track) => {
       if (!subtitle && track.srclang === 'fa') {
         subtitle = track.src;
       }
     });
     return {
       subtitle,
-      variants
+      variants,
+      tracks: (playerData.multiAudio && tracks.length === 2) ? tracks : []
     };
   }
 };

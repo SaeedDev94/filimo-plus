@@ -82,6 +82,7 @@ export interface IMovie {
       resolution: string;
       link: string;
     }>;
+    tracks: Array<string>;
   };
 }
 
@@ -93,6 +94,7 @@ export interface IDownloadRequest {
   resolution: string;
   subtitle: string;
   image: string;
+  tracks: Array<string>;
 }
 
 export interface IDownload {

@@ -5,6 +5,7 @@ const { exec } = require('child_process');
 const DownloadController = {
   request: async (req, res) => {
     const link = req.body.link;
+    const tracks = req.body.tracks || [];
     const info = {
       id: req.body.id || '',
       title: req.body.title || '',
@@ -69,13 +70,13 @@ const DownloadController = {
     }
     //
     if (process.platform === 'win32') {
-      exec(`start /B ${process.cwd()}\\dl.bat "${link}" "${videoFile}" <nul >nul 2> "${logFile}"`, (error) => {
+      exec(`start /B ${process.cwd()}\\dl.bat "${link}" "${videoFile}" "${tracks[0] || ''}" "${tracks[1] || ''}" <nul >nul 2> "${logFile}"`, (error) => {
         if (error) {
           console.log(`Windows bat run error: ${error}`);
         }
       });
     } else {
-      exec(`bash ${process.cwd()}/dl.bash "${link}" "${videoFile}" "${logFile}"`, (error) => {
+      exec(`bash ${process.cwd()}/dl.bash "${link}" "${videoFile}" "${logFile}" "${tracks[0] || ''}" "${tracks[1] || ''}"`, (error) => {
         if (error) {
           console.log(`Linux bash run error: ${error}`);
         }
@@ -198,7 +199,7 @@ const DownloadController = {
           }
           //
           const floatProgress = (currentTime / (totalDuration ? totalDuration : 1)) * 100;
-          const intProgress = parseInt(String(floatProgress));
+          const intProgress = Math.round(floatProgress);
           data.progress = intProgress > 100 ? 100 : intProgress;
           list.push(data);
         } catch (error) {
