@@ -1,5 +1,5 @@
 echo lock > movie\dl.lock
-if NOT "%3"=="" if NOT "%4"=="" goto multipleInput
+if NOT "%~3"=="" if NOT "%~4"=="" goto multipleInput
 goto singleInput
 
 :multipleInput
