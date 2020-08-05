@@ -115,7 +115,13 @@ const DownloadController = {
     }
     //
     const directories = fs.readdirSync(movieDir, {withFileTypes: true})
-      .filter(item => item.isDirectory());
+      .filter(item => item.isDirectory())
+      .map((dir) => {
+        return {
+          name: dir.name,
+          timestamp: fs.statSync(`${movieDir}/${dir.name}`).mtime.valueOf()
+        };
+      }).sort((a, b) => b.timestamp - a.timestamp);
     return res.json({
       status: 200,
       success: true,
