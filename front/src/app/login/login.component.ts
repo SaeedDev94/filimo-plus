@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Log } from '../shared/helper/log.helper';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../core/snackbar.service';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
+import { MDCDialog } from "@material/dialog";
 
 @Component({
   selector: 'app-login',
@@ -22,23 +23,29 @@ export class LoginComponent implements OnInit {
   }
 
   step = 1;
+  countryCode = localStorage.getItem('country_code') || '98';
+  numericOnly = (control) => /^[0-9]+$/g.test(control.value) ? null : {field: 'must be numeric'};
   requestOtpForm = this.formBuilder.group({
-    mobile: ['', [Validators.required, Validators.minLength(10), (control) => {
-      return /^[0-9]+$/g.test(control.value) ? null : {mobile: 'must be numeric'};
-    }]]
+    mobile: ['', [Validators.required, Validators.minLength(10), this.numericOnly]]
   });
   verifyOtpForm = this.formBuilder.group({
-    otp: ['', [Validators.required, Validators.minLength(6), (control) => {
-      return /^[0-9]+$/g.test(control.value) ? null : {otp: 'must be numeric'};
-    }]]
+    otp: ['', [Validators.required, Validators.minLength(6), this.numericOnly]]
+  });
+  countryCodeForm = this.formBuilder.group({
+    code: [`${this.countryCode}`, [Validators.required, Validators.minLength(1), Validators.maxLength(3), this.numericOnly]]
   });
   guid = '';
   tempId = '';
   mobile = '';
+  //
+  dialog: any;
+  @ViewChild('dialogElement', {static: true})
+  set dialogElement(value: ElementRef) {
+    this.dialog = new MDCDialog(value.nativeElement);
+  }
 
   ngOnInit(): void {
   }
-
 
   requestOtp(): void {
     const mobile = this.requestOtpForm.controls.mobile as FormControl;
@@ -47,7 +54,7 @@ export class LoginComponent implements OnInit {
       this.snackbarService.showMessage('شماره موبایل باید شامل 10 رقم باشد');
       return;
     }
-    this.mobile = `0${mobile.value}`;
+    this.mobile = `+${this.countryCode}${mobile.value}`;
     this.authService.requestOtp(this.mobile).subscribe({
       next: (response) => {
         Log.i('AuthService#requestOtp', response);
@@ -83,6 +90,28 @@ export class LoginComponent implements OnInit {
 
   firstStep(): void {
     this.step = 1;
+  }
+
+  openDialog(): void {
+    const code = this.countryCodeForm.controls.code as FormControl;
+    code.setValue(`${this.countryCode}`);
+    this.dialog.open();
+  }
+
+  closeDialog(): void {
+    this.dialog.close();
+  }
+
+  saveCountryCode(): void {
+    const code = this.countryCodeForm.controls.code as FormControl;
+    Log.i('LoginComponent#saveCountyCode', code);
+    if (code.invalid) {
+      this.snackbarService.showMessage('پیش شماره معتبر نیست');
+      return;
+    }
+    this.countryCode = code.value;
+    localStorage.setItem('country_code', this.countryCode);
+    this.closeDialog();
   }
 
 }
