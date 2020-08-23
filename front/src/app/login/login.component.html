@@ -2,8 +2,8 @@
   <div class="form-signin">
     <img class="mb-4" src="assets/images/filimo_logo.svg" alt="" width="72" height="72" />
     <ng-container *ngIf="step === 1">
-      <form [formGroup]="requestOtpForm"
-            (ngSubmit)="requestOtp()">
+      <form [formGroup]="firstStepForm"
+            (ngSubmit)="request()">
         <h1 class="h6 mb-3 font-weight-normal">اگر در فیلیمو حساب کاربری دارید، وارد شوید:</h1>
         <div class="input-group" dir="ltr">
           <div class="input-group-prepend clickable"
@@ -16,13 +16,23 @@
                  aria-label="Mobile"
                  formControlName="mobile" />
         </div>
+        <div class="form-check mt-2">
+          <input type="checkbox"
+                 class="form-check-input"
+                 id="login-otp"
+                 [checked]="otp"
+                 (input)="saveLoginOtp($event)" />
+          <label class="form-check-label" for="login-otp">ورود با پیامک</label>
+        </div>
         <button class="mt-3 btn btn-lg btn-success btn-block" type="submit">ورود</button>
       </form>
     </ng-container>
     <ng-container *ngIf="step === 2">
-      <form [formGroup]="verifyOtpForm"
-            (ngSubmit)="verifyOtp()">
-        <h1 class="h6 mb-3 font-weight-normal">کد فرستاده شده را وارد کنید:</h1>
+      <form [formGroup]="secondStepForm"
+            (ngSubmit)="verify()">
+        <h1 class="h6 mb-3 font-weight-normal">
+          {{ otp ? 'کد فرستاده شده را وارد کنید:' : 'رمز عبور خود را وارد کنید:' }}
+        </h1>
         <div class="input-group" dir="ltr">
           <div class="input-group-prepend">
             <span class="input-group-text">
@@ -30,10 +40,10 @@
             </span>
           </div>
           <input class="form-control"
-                 type="text"
-                 placeholder="Code"
-                 aria-label="Code"
-                 formControlName="otp" />
+                 type="password"
+                 [placeholder]="otp ? 'Code' : 'Password'"
+                 aria-label="CodeOrPassword"
+                 formControlName="pass" />
         </div>
         <button class="mt-3 btn btn-lg btn-success btn-block" type="submit">ادامه</button>
         <div class="back mt-3 text-right small">

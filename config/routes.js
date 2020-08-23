@@ -1,7 +1,7 @@
 module.exports.routes = {
   'GET /': 'RootController.index',
-  'POST /auth/otp/request': 'LoginController.requestOtp',
-  'POST /auth/otp/verify': 'LoginController.verifyOtp',
+  'POST /auth/step/one': 'LoginController.firstStep',
+  'POST /auth/step/two': 'LoginController.secondStep',
   'POST /auth/logout': 'LoginController.logout',
   'POST /home/index': 'HomeController.index',
   'POST /home/next': 'HomeController.next',

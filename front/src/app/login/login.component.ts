@@ -23,13 +23,14 @@ export class LoginComponent implements OnInit {
   }
 
   step = 1;
+  otp = Boolean(Number(localStorage.getItem('login_otp') || 1));
   countryCode = localStorage.getItem('country_code') || '98';
   numericOnly = (control) => /^[0-9]+$/g.test(control.value) ? null : {field: 'must be numeric'};
-  requestOtpForm = this.formBuilder.group({
+  firstStepForm = this.formBuilder.group({
     mobile: ['', [Validators.required, Validators.minLength(10), this.numericOnly]]
   });
-  verifyOtpForm = this.formBuilder.group({
-    otp: ['', [Validators.required, Validators.minLength(6), this.numericOnly]]
+  secondStepForm = this.formBuilder.group({
+    pass: ['', [Validators.required]]
   });
   countryCodeForm = this.formBuilder.group({
     code: [`${this.countryCode}`, [Validators.required, Validators.minLength(1), Validators.maxLength(3), this.numericOnly]]
@@ -47,42 +48,46 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  requestOtp(): void {
-    const mobile = this.requestOtpForm.controls.mobile as FormControl;
-    Log.i('LoginComponent#requestOtp', mobile);
+  request(): void {
+    const mobile = this.firstStepForm.controls.mobile as FormControl;
+    Log.i('LoginComponent#request', mobile);
     if (mobile.invalid) {
       this.snackbarService.showMessage('شماره موبایل باید شامل 10 رقم باشد');
       return;
     }
-    this.mobile = `+${this.countryCode}${mobile.value}`;
-    this.authService.requestOtp(this.mobile).subscribe({
+    this.mobile = `${this.countryCode}${mobile.value}`;
+    this.authService.request(this.mobile, this.otp).subscribe({
       next: (response) => {
-        Log.i('AuthService#requestOtp', response);
+        Log.i('AuthService#request', response);
         if (response.success) {
           this.guid = response.data.guid;
           this.tempId = response.data.tempId;
           this.step = 2;
+        } else {
+          this.snackbarService.showMessage(response.message);
         }
       }
     });
   }
 
-  verifyOtp(): void {
-    const otp = this.verifyOtpForm.controls.otp as FormControl;
-    Log.i('LoginComponent#verifyOtp', otp);
-    if (otp.invalid) {
-      this.snackbarService.showMessage('کد باید شامل 6 رقم باشد');
+  verify(): void {
+    const pass = this.secondStepForm.controls.pass as FormControl;
+    Log.i('LoginComponent#verify', pass);
+    if (pass.invalid) {
+      this.snackbarService.showMessage((this.otp) ? 'کد وارد نشده است' : 'رمز عبور وارد نشده است');
       return;
     }
-    this.authService.verifyOtp(this.guid, this.tempId, this.mobile, otp.value).subscribe({
+    this.authService.verify(this.guid, this.tempId, this.mobile, pass.value, this.otp).subscribe({
       next: (response) => {
-        Log.i('AuthService#verifyOtp', response);
+        Log.i('AuthService#verify', response);
         if (response.success) {
           localStorage.setItem('jwt_token', response.data.token);
           if (!environment.production) {
             localStorage.setItem('b_jwt_token', response.data.token);
           }
           this.router.navigate(['home']);
+        } else {
+          this.snackbarService.showMessage(response.message);
         }
       }
     });
@@ -90,6 +95,7 @@ export class LoginComponent implements OnInit {
 
   firstStep(): void {
     this.step = 1;
+    this.secondStepForm.controls.pass.setValue('');
   }
 
   openDialog(): void {
@@ -112,6 +118,12 @@ export class LoginComponent implements OnInit {
     this.countryCode = code.value;
     localStorage.setItem('country_code', this.countryCode);
     this.closeDialog();
+  }
+
+  saveLoginOtp(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    this.otp = checkbox.checked;
+    localStorage.setItem('login_otp', (this.otp) ? '1' : '0');
   }
 
 }

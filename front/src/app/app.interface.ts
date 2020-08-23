@@ -5,12 +5,12 @@ export interface IBaseResponse<T> {
   data: T;
 }
 
-export interface ILoginRequestOtp {
+export interface ILoginRequest {
   guid: string;
   tempId: string;
 }
 
-export interface ILoginVerifyOtp {
+export interface ILoginVerify {
   token: string;
 }
 

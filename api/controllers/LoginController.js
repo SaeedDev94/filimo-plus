@@ -1,10 +1,11 @@
 const LoginController = {
-  requestOtp: async (req, res) => {
+  firstStep: async (req, res) => {
     try {
       const mobile = req.body.mobile || '';
+      const otp = Boolean(req.body.otp);
       const result = await sails.helpers.filimo.with({
         method: 'get',
-        path: '/_/login',
+        path: '/signin',
         requestHeaders: req.headers,
         responseType: 'text'
       });
@@ -21,7 +22,7 @@ const LoginController = {
       const guid = matches[0][1];
       const authResponse = await sails.helpers.filimo.with({
         method: 'post',
-        path: '/_/api/fa/v1/user/Authenticate/auth',
+        path: '/api/fa/v1/user/Authenticate/auth',
         requestHeaders: req.headers,
         responseType: 'json',
         body: {
@@ -31,13 +32,13 @@ const LoginController = {
       let tempId = authResponse.data.data.attributes.temp_id;
       const firstStepResponse = await sails.helpers.filimo.with({
         method: 'post',
-        path: '/_/api/fa/v1/user/Authenticate/signin_step1',
+        path: '/api/fa/v1/user/Authenticate/signin_step1',
         requestHeaders: req.headers,
         responseType: 'json',
         body: {
           guid,
           'temp_id': tempId,
-          'codepass_type': 'otp',
+          'codepass_type': (otp) ? 'otp' : 'pass',
           account: mobile
         }
       });
@@ -52,26 +53,30 @@ const LoginController = {
         }
       });
     } catch (error) {
+      const errorBody = error.response.data || {};
+      const errors = errorBody.errors || [];
+      const lastError = errors[errors.length - 1] || {};
       return res.json({
         status: error.status || 0,
         success: false,
-        message: error.message || '',
+        message: lastError.detail || error.message || '',
         data: error
       });
     }
   },
-  verifyOtp: async (req, res) => {
+  secondStep: async (req, res) => {
+    const otp = Boolean(req.body.otp);
     const body = {
       guid: req.body.guid || '',
       'temp_id': req.body.tempId || '',
       account: req.body.mobile || '',
-      code: req.body.otp || '',
-      'codepass_type': 'otp'
+      code: req.body.pass || '',
+      'codepass_type': (otp) ? 'otp' : 'pass'
     };
     try {
       const secondStepResponse = await sails.helpers.filimo.with({
         method: 'post',
-        path: '/_/api/fa/v1/user/Authenticate/signin_step2',
+        path: '/api/fa/v1/user/Authenticate/signin_step2',
         requestHeaders: req.headers,
         responseType: 'json',
         body
@@ -88,13 +93,22 @@ const LoginController = {
     } catch (error) {
       const statusCode = error.response.status || 0;
       const errorBody = error.response.data || {};
-      if (statusCode === 403 && errorBody.errors && errorBody.errors[0].type_info === 'get_max_tokens') {
-        return await LoginController.logoutLastDevice(body.guid, errorBody.errors[0].uri, req, res);
+      const errors = errorBody.errors || [];
+      const lastError = errors[errors.length - 1] || {};
+      if (statusCode === 403 && errorBody.errors) {
+        const maxDevices = errorBody.errors.find(item => item.type_info === 'get_max_tokens');
+        const forceOtp = errorBody.errors.find(item => item.type_info === 'force_mobile_signin');
+        if (maxDevices) {
+          return await LoginController.logoutLastDevice(body.guid, errorBody.errors[0].uri, req, res);
+        }
+        if (forceOtp) {
+          lastError.detail = 'ورود با رمز عبور امکان پذیر نیست، ورود با پیامک را امتحان کنید';
+        }
       }
       return res.json({
         status: statusCode,
         success: false,
-        message: error.message || '',
+        message: lastError.detail || error.message || '',
         data: error
       });
     }
@@ -103,7 +117,7 @@ const LoginController = {
     try {
       const sessionsListResponse = await sails.helpers.filimo.with({
         method: 'get',
-        path: `/_${uri}`,
+        path: `/${uri}`,
         requestHeaders: req.headers,
         responseType: 'json',
         params: {
@@ -118,7 +132,7 @@ const LoginController = {
       const revokeLink = sessionsList[lastSessionKey].revoke_link;
       const revokeSessionResponse = await sails.helpers.filimo.with({
         method: 'get',
-        path: `/_${revokeLink}`,
+        path: `/${revokeLink}`,
         requestHeaders: req.headers,
         responseType: 'json',
         params: {
@@ -128,7 +142,7 @@ const LoginController = {
       const loginLink = revokeSessionResponse.data.data.attributes.uri;
       const loginResponse = await sails.helpers.filimo.with({
         method: 'get',
-        path: `/_${loginLink}`,
+        path: `/${loginLink}`,
         requestHeaders: req.headers,
         responseType: 'json',
         params: {

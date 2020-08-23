@@ -25,6 +25,17 @@
       height: auto;
       padding: 10px;
     }
+    .form-check {
+      text-align: right;
+      input {
+        margin: auto;
+      }
+      label {
+        margin-right: 1.25rem;
+        font-size: 0.8rem;
+        user-select: none;
+      }
+    }
     .back {
       span {
         cursor: pointer;

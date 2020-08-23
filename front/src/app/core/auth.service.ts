@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FullscreenLoading } from '../shared/decorator/fullscreen-loading.decorator';
 import { Observable } from 'rxjs';
-import { IBaseResponse, ILoginRequestOtp, ILoginVerifyOtp } from '../app.interface';
+import { IBaseResponse, ILoginRequest, ILoginVerify } from '../app.interface';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -14,16 +14,20 @@ export class AuthService {
   }
 
   @FullscreenLoading()
-  requestOtp(mobile: string): Observable<IBaseResponse<ILoginRequestOtp>> {
-    return this.http.post<IBaseResponse<ILoginRequestOtp>>(`${environment.baseUrl}/auth/otp/request`, {mobile});
+  request(mobile: string, otp: boolean): Observable<IBaseResponse<ILoginRequest>> {
+    return this.http.post<IBaseResponse<ILoginRequest>>(`${environment.baseUrl}/auth/step/one`, {
+      mobile,
+      otp
+    });
   }
 
   @FullscreenLoading()
-  verifyOtp(guid: string, tempId: string, mobile: string, otp: string): Observable<IBaseResponse<ILoginVerifyOtp>> {
-    return this.http.post<IBaseResponse<ILoginVerifyOtp>>(`${environment.baseUrl}/auth/otp/verify`, {
+  verify(guid: string, tempId: string, mobile: string, pass: string, otp: boolean): Observable<IBaseResponse<ILoginVerify>> {
+    return this.http.post<IBaseResponse<ILoginVerify>>(`${environment.baseUrl}/auth/step/two`, {
       guid,
       tempId,
       mobile,
+      pass,
       otp
     });
   }
