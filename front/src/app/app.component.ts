@@ -28,7 +28,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   isFullscreenLoadingLayoutVisible = false;
   //
   snackbar: any = null;
-  snackbarText = '';
   @ViewChild('snackbar', {static: false}) snackbarElementRef: ElementRef;
 
   ngOnInit(): void {
@@ -88,10 +87,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   handleSnackbar(): void {
     this.snackbarService.subject$.subscribe(value => {
       if (value) {
-        this.snackbarText = value;
         if (this.snackbar?.isOpen) {
           this.snackbar?.close('new text');
         }
+        this.snackbar.labelText = value;
         this.snackbar?.open();
       }
     });

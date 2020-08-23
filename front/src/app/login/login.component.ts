@@ -27,13 +27,13 @@ export class LoginComponent implements OnInit {
   countryCode = localStorage.getItem('country_code') || '98';
   numericOnly = (control) => /^[0-9]+$/g.test(control.value) ? null : {field: 'must be numeric'};
   firstStepForm = this.formBuilder.group({
-    mobile: ['', [Validators.required, Validators.minLength(10), this.numericOnly]]
+    mobile: ['', [Validators.required, this.numericOnly]]
   });
   secondStepForm = this.formBuilder.group({
     pass: ['', [Validators.required]]
   });
   countryCodeForm = this.formBuilder.group({
-    code: [`${this.countryCode}`, [Validators.required, Validators.minLength(1), Validators.maxLength(3), this.numericOnly]]
+    code: [`${this.countryCode}`, [Validators.required, this.numericOnly]]
   });
   guid = '';
   tempId = '';
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     const mobile = this.firstStepForm.controls.mobile as FormControl;
     Log.i('LoginComponent#request', mobile);
     if (mobile.invalid) {
-      this.snackbarService.showMessage('شماره موبایل باید شامل 10 رقم باشد');
+      this.snackbarService.showMessage('شماره موبایل وارد شده معتبر نیست');
       return;
     }
     this.mobile = `${this.countryCode}${mobile.value}`;
@@ -112,7 +112,7 @@ export class LoginComponent implements OnInit {
     const code = this.countryCodeForm.controls.code as FormControl;
     Log.i('LoginComponent#saveCountyCode', code);
     if (code.invalid) {
-      this.snackbarService.showMessage('پیش شماره معتبر نیست');
+      this.snackbarService.showMessage('پیش شماره وارد شده معتبر نیست');
       return;
     }
     this.countryCode = code.value;
