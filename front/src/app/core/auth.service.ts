@@ -14,19 +14,19 @@ export class AuthService {
   }
 
   @FullscreenLoading()
-  request(mobile: string, otp: boolean): Observable<IBaseResponse<ILoginRequest>> {
+  request(account: string, otp: boolean): Observable<IBaseResponse<ILoginRequest>> {
     return this.http.post<IBaseResponse<ILoginRequest>>(`${environment.baseUrl}/auth/step/one`, {
-      mobile,
+      account,
       otp
     });
   }
 
   @FullscreenLoading()
-  verify(guid: string, tempId: string, mobile: string, pass: string, otp: boolean): Observable<IBaseResponse<ILoginVerify>> {
+  verify(guid: string, tempId: string, account: string, pass: string, otp: boolean): Observable<IBaseResponse<ILoginVerify>> {
     return this.http.post<IBaseResponse<ILoginVerify>>(`${environment.baseUrl}/auth/step/two`, {
       guid,
       tempId,
-      mobile,
+      account,
       pass,
       otp
     });

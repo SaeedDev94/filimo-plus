@@ -1,8 +1,3 @@
-@use "@material/dialog/mdc-dialog";
-@import "../../mixin";
-
-@include dialog('light');
-
 .body {
   color: #262626;
   background-image: url("/assets/images/login_bg.jpg");

@@ -6,15 +6,14 @@
             (ngSubmit)="request()">
         <h1 class="h6 mb-3 font-weight-normal">اگر در فیلیمو حساب کاربری دارید، وارد شوید:</h1>
         <div class="input-group" dir="ltr">
-          <div class="input-group-prepend clickable"
-               (click)="openDialog()">
-            <span class="input-group-text">+{{ countryCode }}</span>
+          <div class="input-group-prepend">
+            <span class="input-group-text">@</span>
           </div>
           <input class="form-control"
                  type="text"
-                 placeholder="Mobile"
-                 aria-label="Mobile"
-                 formControlName="mobile" />
+                 placeholder="Email or Mobile or Username"
+                 aria-label="EmailOrMobileOrUsername"
+                 formControlName="account" />
         </div>
         <div class="form-check mt-2">
           <input type="checkbox"
@@ -52,36 +51,4 @@
       </form>
     </ng-container>
   </div>
-</div>
-<div class="mdc-dialog" #dialogElement>
-  <div class="mdc-dialog__container">
-    <div class="mdc-dialog__surface"
-         role="alertdialog">
-      <div class="mdc-dialog__content" id="my-dialog-content">
-        <form [formGroup]="countryCodeForm"
-              (ngSubmit)="saveCountryCode()">
-          <div class="form-group m-0">
-            <label for="country-code">پیش شماره:</label>
-            <input type="text"
-                   class="form-control"
-                   id="country-code"
-                   formControlName="code" />
-          </div>
-        </form>
-      </div>
-      <footer class="mdc-dialog__actions">
-        <button class="btn"
-                type="button"
-                (click)="closeDialog()">
-          <span>بستن</span>
-        </button>
-        <button class="btn"
-                type="button"
-                (click)="saveCountryCode()">
-          <span>ذخیره</span>
-        </button>
-      </footer>
-    </div>
-  </div>
-  <div class="mdc-dialog__scrim"></div>
 </div>

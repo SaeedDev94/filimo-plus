@@ -1,11 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Log } from '../shared/helper/log.helper';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../core/snackbar.service';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
-import { MDCDialog } from "@material/dialog";
 
 @Component({
   selector: 'app-login',
@@ -24,39 +23,28 @@ export class LoginComponent implements OnInit {
 
   step = 1;
   otp = Boolean(Number(localStorage.getItem('login_otp') || 1));
-  countryCode = localStorage.getItem('country_code') || '98';
-  numericOnly = (control) => /^[0-9]+$/g.test(control.value) ? null : {field: 'must be numeric'};
   firstStepForm = this.formBuilder.group({
-    mobile: ['', [Validators.required, this.numericOnly]]
+    account: ['', [Validators.required]]
   });
   secondStepForm = this.formBuilder.group({
     pass: ['', [Validators.required]]
   });
-  countryCodeForm = this.formBuilder.group({
-    code: [`${this.countryCode}`, [Validators.required, this.numericOnly]]
-  });
   guid = '';
   tempId = '';
-  mobile = '';
-  //
-  dialog: any;
-  @ViewChild('dialogElement', {static: true})
-  set dialogElement(value: ElementRef) {
-    this.dialog = new MDCDialog(value.nativeElement);
-  }
+  account = '';
 
   ngOnInit(): void {
   }
 
   request(): void {
-    const mobile = this.firstStepForm.controls.mobile as FormControl;
-    Log.i('LoginComponent#request', mobile);
-    if (mobile.invalid) {
-      this.snackbarService.showMessage('شماره موبایل وارد شده معتبر نیست');
+    const account = this.firstStepForm.controls.account as FormControl;
+    Log.i('LoginComponent#request', account);
+    if (account.invalid) {
+      this.snackbarService.showMessage('ایمیل یا موبایل یا نام کاربری خود را وارد کنید');
       return;
     }
-    this.mobile = `${this.countryCode}${mobile.value}`;
-    this.authService.request(this.mobile, this.otp).subscribe({
+    this.account = account.value;
+    this.authService.request(account.value, this.otp).subscribe({
       next: (response) => {
         Log.i('AuthService#request', response);
         if (response.success) {
@@ -77,7 +65,7 @@ export class LoginComponent implements OnInit {
       this.snackbarService.showMessage((this.otp) ? 'کد وارد نشده است' : 'رمز عبور وارد نشده است');
       return;
     }
-    this.authService.verify(this.guid, this.tempId, this.mobile, pass.value, this.otp).subscribe({
+    this.authService.verify(this.guid, this.tempId, this.account, pass.value, this.otp).subscribe({
       next: (response) => {
         Log.i('AuthService#verify', response);
         if (response.success) {
@@ -96,28 +84,6 @@ export class LoginComponent implements OnInit {
   firstStep(): void {
     this.step = 1;
     this.secondStepForm.controls.pass.setValue('');
-  }
-
-  openDialog(): void {
-    const code = this.countryCodeForm.controls.code as FormControl;
-    code.setValue(`${this.countryCode}`);
-    this.dialog.open();
-  }
-
-  closeDialog(): void {
-    this.dialog.close();
-  }
-
-  saveCountryCode(): void {
-    const code = this.countryCodeForm.controls.code as FormControl;
-    Log.i('LoginComponent#saveCountyCode', code);
-    if (code.invalid) {
-      this.snackbarService.showMessage('پیش شماره وارد شده معتبر نیست');
-      return;
-    }
-    this.countryCode = code.value;
-    localStorage.setItem('country_code', this.countryCode);
-    this.closeDialog();
   }
 
   saveLoginOtp(event: Event): void {

@@ -1,7 +1,7 @@
 const LoginController = {
   firstStep: async (req, res) => {
     try {
-      const mobile = req.body.mobile || '';
+      const account = req.body.account || '';
       const otp = Boolean(req.body.otp);
       const result = await sails.helpers.filimo.with({
         method: 'get',
@@ -39,7 +39,7 @@ const LoginController = {
           guid,
           'temp_id': tempId,
           'codepass_type': (otp) ? 'otp' : 'pass',
-          account: mobile
+          account
         }
       });
       tempId = firstStepResponse.data.data.attributes.temp_id;
@@ -69,7 +69,7 @@ const LoginController = {
     const body = {
       guid: req.body.guid || '',
       'temp_id': req.body.tempId || '',
-      account: req.body.mobile || '',
+      account: req.body.account || '',
       code: req.body.pass || '',
       'codepass_type': (otp) ? 'otp' : 'pass'
     };
