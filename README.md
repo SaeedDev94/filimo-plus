@@ -31,4 +31,5 @@ To [@NabiKAZ](https://github.com/NabiKAZ) for [filimo-downloader](https://github
 
 I spent huge amount of time for creating FilimoPlus<br />
 If you like my work please show your support by clicking on star button and share this repo with your friends<br />
+Also you can send your donations via [this link](https://zarinp.al/@saeedpooyanfar) 😄😍<br />
 Thank you!
