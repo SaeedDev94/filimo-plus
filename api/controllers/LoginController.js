@@ -117,7 +117,7 @@ const LoginController = {
     try {
       const sessionsListResponse = await sails.helpers.filimo.with({
         method: 'get',
-        path: `/${uri}`,
+        path: `${uri}`,
         requestHeaders: req.headers,
         responseType: 'json',
         params: {
@@ -132,7 +132,7 @@ const LoginController = {
       const revokeLink = sessionsList[lastSessionKey].revoke_link;
       const revokeSessionResponse = await sails.helpers.filimo.with({
         method: 'get',
-        path: `/${revokeLink}`,
+        path: `${revokeLink}`,
         requestHeaders: req.headers,
         responseType: 'json',
         params: {
@@ -142,7 +142,7 @@ const LoginController = {
       const loginLink = revokeSessionResponse.data.data.attributes.uri;
       const loginResponse = await sails.helpers.filimo.with({
         method: 'get',
-        path: `/${loginLink}`,
+        path: `${loginLink}`,
         requestHeaders: req.headers,
         responseType: 'json',
         params: {
