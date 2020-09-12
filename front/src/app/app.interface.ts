@@ -83,6 +83,7 @@ export interface IMovie {
       link: string;
     }>;
     tracks: Array<string>;
+    playlist: string;
   };
 }
 
@@ -107,4 +108,10 @@ export interface IDownload {
   subtitle: string;
   progress: number;
   deleted?: boolean;
+}
+
+export interface IPlay {
+  src: string;
+  type: string;
+  subtitle: string;
 }

@@ -1,5 +1,5 @@
 import { MDCDialog } from '@material/dialog';
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IDownload } from '../app.interface';
 import { DownloadService } from './download.service';
 import { Log } from '../shared/helper/log.helper';
@@ -13,8 +13,7 @@ import { environment } from '../../environments/environment';
 export class DownloadComponent implements OnInit, OnDestroy {
 
   constructor(
-    private downloadService: DownloadService,
-    private changeDetectorRef: ChangeDetectorRef
+    private downloadService: DownloadService
   ) {
   }
 
@@ -24,10 +23,9 @@ export class DownloadComponent implements OnInit, OnDestroy {
   timeout: any;
   //
   dialog: any;
-  @ViewChild('dialogElement', {static: false})
+  @ViewChild('dialogElement', {static: true})
   set dialogElement(value: ElementRef) {
     this.dialog = new MDCDialog(value.nativeElement);
-    this.changeDetectorRef.detectChanges();
   }
 
   ngOnInit() {

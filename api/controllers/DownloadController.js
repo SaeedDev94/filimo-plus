@@ -3,6 +3,23 @@ const path = require('path');
 const { exec } = require('child_process');
 
 const DownloadController = {
+  movieDir: `${process.cwd()}${path.sep}movie`,
+  movieSymlink: `${process.cwd()}${path.sep}.tmp${path.sep}public${path.sep}movie`,
+  createMovieSymlink: () => {
+    const movieDir = `${DownloadController.movieDir}`;
+    const movieSymlink = `${DownloadController.movieSymlink}`;
+    if (!fs.existsSync(movieSymlink)) {
+      try {
+        fs.symlinkSync(movieDir, movieSymlink);
+      } catch (unused) {
+        console.log(
+          `Can not create symlink: ${movieDir} -> ${movieSymlink}
+           Please check directory permission or run app with admin access
+          `
+        );
+      }
+    }
+  },
   request: async (req, res) => {
     const link = req.body.link;
     const tracks = req.body.tracks || [];
@@ -91,7 +108,7 @@ const DownloadController = {
     });
   },
   list: (req, res) => {
-    const movieDir = `${process.cwd()}${path.sep}movie`;
+    const movieDir = `${DownloadController.movieDir}`;
     if (!fs.existsSync(movieDir)) {
       return res.json({
         status: 200,
@@ -101,18 +118,7 @@ const DownloadController = {
       });
     }
     //
-    const movieSymlink = `${process.cwd()}${path.sep}.tmp${path.sep}public${path.sep}movie`;
-    if (!fs.existsSync(movieSymlink)) {
-      try {
-        fs.symlinkSync(movieDir, movieSymlink);
-      } catch (unused) {
-        console.log(
-          `Can not create symlink: ${movieDir} -> ${movieSymlink}
-           Please check directory permission or run app with admin access
-          `
-        );
-      }
-    }
+    DownloadController.createMovieSymlink();
     //
     const directories = fs.readdirSync(movieDir, {withFileTypes: true})
       .filter(item => item.isDirectory())
@@ -194,7 +200,7 @@ const DownloadController = {
           //
           let totalDuration = 0;
           const totalDurationMatches = [...logText.matchAll(/Duration: (.*), start:/g)];
-          if (totalDurationMatches[0] && totalDurationMatches  [0][1]) {
+          if (totalDurationMatches[0] && totalDurationMatches[0][1]) {
             totalDuration = DownloadController.strTimeToSeconds(totalDurationMatches[0][1]);
           }
           //

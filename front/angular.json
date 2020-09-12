@@ -49,6 +49,15 @@
             "styles": [
               "src/styles.scss"
             ],
+            "allowedCommonJsDependencies": [
+              "global/document",
+              "mux.js",
+              "videojs-vtt.js",
+              "@babel/runtime",
+              "@videojs/xhr",
+              "@videojs/vhs-utils",
+              "xmldom"
+            ],
             "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": [

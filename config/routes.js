@@ -9,6 +9,10 @@ module.exports.routes = {
   'POST /tag/next': 'TagController.next',
   'POST /search/index': 'SearchController.index',
   'POST /movie/index': 'MovieController.index',
+  'GET /play/proxy': 'PlayController.proxy',
+  'GET /play/playlist': 'PlayController.getPlaylist',
+  'POST /play/hls': 'PlayController.hls',
+  'POST /play/file': 'PlayController.file',
   'POST /download/request': 'DownloadController.request',
   'POST /download/list': 'DownloadController.list',
   'POST /download/cancel': 'DownloadController.cancel'

@@ -10,9 +10,21 @@
          [class.disable]="item.deleted"
          *ngFor="let item of items; let i = index">
       <div class="col-2 text-center">
-        <img class="image"
-             [src]="item.image"
-             alt="Movie image" />
+        <div class="movie-image-container">
+          <img class="image"
+               [src]="item.image"
+               alt="Movie image" />
+          <div class="overlay"
+               *ngIf="!item.deleted && item.progress === 100">
+            <div class="match-parent clickable"
+                 [routerLink]="'/play/'+item.id+'/file'">
+              <div class="play-icon">
+                <img src="../../assets/images/play.svg"
+                     alt="Play icon" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-10 text-right">
         <div class="title vertical-padding">

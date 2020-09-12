@@ -102,7 +102,8 @@ const MovieController = {
     return {
       subtitle,
       variants,
-      tracks: (playerData.multiAudio && tracks.length === 2) ? tracks : []
+      tracks: (playerData.multiAudio && tracks.length >= 2) ? tracks : [],
+      playlist: streamFile.data
     };
   }
 };

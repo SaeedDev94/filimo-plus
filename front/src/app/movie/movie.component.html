@@ -5,8 +5,18 @@
     <div class="overlay-back">
       <div class="container">
         <div class="row">
-          <div class="col-lg-auto col-md-auto col-sm-auto">
+          <div class="col-lg-auto col-md-auto col-sm-auto movie-image-container">
             <img class="image" [src]="movie.image" alt="" />
+            <div class="overlay"
+                 *ngIf="movie.download">
+              <div class="match-parent clickable"
+                   [routerLink]="'/play/'+movie.id+'/hls'">
+                <div class="play-icon">
+                  <img src="../../assets/images/play.svg"
+                       alt="Play icon" />
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-lg-auto col-md-auto col-sm-auto text-right">
             <div>

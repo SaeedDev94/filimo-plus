@@ -31,6 +31,7 @@
     "bootstrap": "^4.4.1",
     "rxjs": "~6.6.2",
     "tslib": "^1.11.1",
+    "video.js": "^7.8.4",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
@@ -38,9 +39,10 @@
     "@angular/cli": "~10.0.5",
     "@angular/compiler-cli": "~10.0.7",
     "@angular/language-service": "~10.0.7",
-    "@types/node": "^14.0.27",
     "@types/jasmine": "~3.5.12",
     "@types/jasminewd2": "~2.0.8",
+    "@types/node": "^14.0.27",
+    "@types/video.js": "^7.3.10",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.2",
