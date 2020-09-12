@@ -4,7 +4,7 @@
 
 ### About
 
-With this app you can browse filimo, search and **download** items!
+With this app you can browse filimo, search, play or **download** items!
 
 ### Note
 

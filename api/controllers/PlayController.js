@@ -103,7 +103,7 @@ const PlayController = {
       success: true,
       message: 'OK',
       data: {
-        src: `${baseUrl}/movie/playlist.m3u8`,
+        src: `${baseUrl}/movie/playlist.m3u8?timestamp=${timestamp}`,
         type: 'application/x-mpegURL',
         subtitle
       }

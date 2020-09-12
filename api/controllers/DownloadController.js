@@ -8,6 +8,13 @@ const DownloadController = {
   createMovieSymlink: () => {
     const movieDir = `${DownloadController.movieDir}`;
     const movieSymlink = `${DownloadController.movieSymlink}`;
+    if (!fs.existsSync(movieDir)) {
+      try {
+        fs.mkdirSync(movieDir);
+      } catch (unused) {
+        console.log(`Can not create directory: ${movieDir}`);
+      }
+    }
     if (!fs.existsSync(movieSymlink)) {
       try {
         fs.symlinkSync(movieDir, movieSymlink);
