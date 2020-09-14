@@ -15,24 +15,9 @@ async function bootstrap() {
     root: join(process.cwd(), 'public'),
     index: ['index.html'],
   });
-  app.enableCors({
-    origin: (requestOrigin, callback) => {
-      if (process.env.NODE_ENV === 'production') {
-        callback(new Error('Not allowed'), false);
-        return;
-      }
-      let hostname: string;
-      try {
-        hostname = new URL(requestOrigin).hostname;
-      } finally {
-        if (hostname === 'localhost') {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed'), false);
-        }
-      }
-    },
-  });
+  if (process.env.NODE_ENV !== 'production') {
+    app.enableCors();
+  }
   await app.listen(1399);
 }
 
