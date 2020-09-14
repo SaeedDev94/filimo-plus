@@ -1,10 +1,19 @@
 {
   "name": "filimo-plus",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "version": "3.0.0",
+  "description": "Browse, search, play or download filimo items",
+  "author": {
+    "email": "saeedp47@gmail.com",
+    "name": "SaeedPooyanfar",
+    "url": "https://github.com/Saeed-Pooyanfar"
+  },
+  "private": false,
+  "license": "MIT",
+  "keywords": [
+    "filimo-plus",
+    "offline",
+    "download"
+  ],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
