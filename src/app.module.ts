@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { configuration } from './config/configuration';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -10,9 +9,7 @@ import { configuration } from './config/configuration';
       ignoreEnvFile: true,
       load: [configuration]
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'public')
-    })
+    AuthModule
   ],
 })
 export class AppModule {}
