@@ -17,7 +17,7 @@ export class AllExceptionsFilterService implements ExceptionFilter {
     res.status(200)
       .json(({
         success: false,
-        message: 'Somethings went wrong !!',
+        message: exception.message || 'Somethings went wrong !!',
         data: null
       }) as IBaseResponse<null>);
   }

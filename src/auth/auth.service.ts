@@ -36,9 +36,9 @@ export class AuthService {
 
   async request(payload: ILoginRequestPayload): Promise<ILoginRequest> {
     const guid = await this.getGuid();
-    if (!guid) throw new Error('AuthService#request: guid is not valid');
+    if (!guid) throw new Error('guid not found');
     const tempId = await this.getTempId(guid);
-    if (!tempId) throw new Error('AuthService#request: tempId is not valid');
+    if (!tempId) throw new Error('tempId not found');
     return this.http.post<any>(`${this.config.get('url.filimo')}/api/fa/v1/user/Authenticate/signin_step1`, {
       guid,
       'temp_id': tempId,
