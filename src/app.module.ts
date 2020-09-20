@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { configuration } from './config/configuration';
 import { AuthModule } from './auth/auth.module';
+import { urlConfig } from './config/url.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
       ignoreEnvFile: true,
-      load: [configuration]
+      load: [urlConfig]
     }),
     AuthModule
   ],

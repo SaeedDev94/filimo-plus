@@ -2,18 +2,20 @@ import { HttpService, Injectable } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 import { ILoginRequest, ILoginRequestPayload, ILoginVerify, ILoginVerifyPayload } from './auth.interface';
 import { AxiosError } from 'axios';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
 
   constructor(
-    private http: HttpService
+    private http: HttpService,
+    private config: ConfigService
   ) {
   }
 
   getGuid(): Promise<string> {
-    return this.http.get<string>(`${process.env.filimoBaseUrl}/signin`, {
-      responseType: 'text'
+    return this.http.get<string>(`${this.config.get('url.filimo')}/signin`, {
+      responseType: 'text',
     }).pipe(
       map((response) => {
         const html = response.data || '';
@@ -23,7 +25,7 @@ export class AuthService {
   }
 
   getTempId(guid: string): Promise<string> {
-    return this.http.post<any>(`${process.env.filimoBaseUrl}/api/fa/v1/user/Authenticate/auth`, {
+    return this.http.post<any>(`${this.config.get('url.filimo')}/api/fa/v1/user/Authenticate/auth`, {
       guid
     }).pipe(
       map((response) => {
@@ -37,7 +39,7 @@ export class AuthService {
     if (!guid) throw new Error('AuthService#request: guid is not valid');
     const tempId = await this.getTempId(guid);
     if (!tempId) throw new Error('AuthService#request: tempId is not valid');
-    return this.http.post<any>(`${process.env.filimoBaseUrl}/api/fa/v1/user/Authenticate/signin_step1`, {
+    return this.http.post<any>(`${this.config.get('url.filimo')}/api/fa/v1/user/Authenticate/signin_step1`, {
       guid,
       'temp_id': tempId,
       'codepass_type': (payload.otp) ? 'otp' : 'pass',
@@ -55,7 +57,7 @@ export class AuthService {
   async verify(payload: ILoginVerifyPayload): Promise<ILoginVerify> {
     let response: ILoginVerify;
     try {
-      response = await this.http.post<any>(`${process.env.filimoBaseUrl}/api/fa/v1/user/Authenticate/signin_step2`, {
+      response = await this.http.post<any>(`${this.config.get('url.filimo')}/api/fa/v1/user/Authenticate/signin_step2`, {
         guid: payload.guid,
         'temp_id': payload.tempId,
         account: payload.account,
@@ -96,7 +98,7 @@ export class AuthService {
   async logoutLastDeviceAndLogin(guid: string, sessionsListUri: string): Promise<ILoginVerify> {
     const sessionRevokeUri = await this.getSessionRevokeUri(guid, sessionsListUri);
     const loginUri = await this.getLoginUri(guid, sessionRevokeUri);
-    return this.http.get<any>(`${process.env.filimoBaseUrl}${loginUri}`, {
+    return this.http.get<any>(`${this.config.get('url.filimo')}${loginUri}`, {
       params: {
         guid
       }
@@ -111,7 +113,7 @@ export class AuthService {
   }
 
   getSessionRevokeUri(guid: string, sessionsListUri: string): Promise<string> {
-    return this.http.get<any>(`${process.env.filimoBaseUrl}${sessionsListUri}`, {
+    return this.http.get<any>(`${this.config.get('url.filimo')}${sessionsListUri}`, {
       params: {
         guid
       }
@@ -128,7 +130,7 @@ export class AuthService {
   }
 
   getLoginUri(guid: string, sessionRevokeUri: string): Promise<string> {
-    return this.http.get<any>(`${process.env.filimoBaseUrl}${sessionRevokeUri}`, {
+    return this.http.get<any>(`${this.config.get('url.filimo')}${sessionRevokeUri}`, {
       params: {
         guid
       }
@@ -140,7 +142,7 @@ export class AuthService {
   }
 
   logout(): Promise<boolean> {
-    return this.http.get<string>(`${process.env.filimoBaseUrl}/authentication/authentication/signout`, {
+    return this.http.get<string>(`${this.config.get('url.filimo')}/authentication/authentication/signout`, {
       responseType: 'text'
     }).pipe(
       map(() => true)
