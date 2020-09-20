@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
 import { IBaseResponse } from '../app.interface';
 import { AxiosError } from 'axios';
@@ -16,7 +16,6 @@ export class AllExceptionsFilterService implements ExceptionFilter {
     const res = context.getResponse<Response>();
     res.status(200)
       .json(({
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
         success: false,
         message: 'Somethings went wrong !!',
         data: null

@@ -11,7 +11,6 @@ export class WrapResponseInterceptor<T> implements NestInterceptor<T, IBaseRespo
       .pipe(
         map((response) => {
           return {
-            status: 200,
             success: !!response,
             message: response ? 'OK' : 'Failed',
             data: response
