@@ -12,19 +12,19 @@ export class AuthController {
   }
 
   @Post('step/one')
-  @UseInterceptors(new WrapResponseInterceptor<ILoginRequest>())
+  @UseInterceptors(WrapResponseInterceptor)
   stepOne(@Body() payload: ILoginRequestPayload): Promise<ILoginRequest> {
     return this.authService.request(payload);
   }
 
   @Post('step/two')
-  @UseInterceptors(new WrapResponseInterceptor<ILoginVerify>())
+  @UseInterceptors(WrapResponseInterceptor)
   stepTwo(@Body() payload: ILoginVerifyPayload): Promise<ILoginVerify> {
     return this.authService.verify(payload);
   }
 
   @Post('logout')
-  @UseInterceptors(new WrapResponseInterceptor<boolean>())
+  @UseInterceptors(WrapResponseInterceptor)
   logout(): Promise<boolean> {
     return this.authService.logout();
   }

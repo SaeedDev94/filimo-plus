@@ -1,20 +1,23 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { IBaseResponse } from '../app.interface';
+import { Response } from 'express';
+import { map } from 'rxjs/operators';
 
 @Injectable()
-export class WrapResponseInterceptor<T> implements NestInterceptor<T, IBaseResponse<T>> {
+export class WrapResponseInterceptor implements NestInterceptor {
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<IBaseResponse<T>> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<IBaseResponse> {
+    const response = context.switchToHttp().getResponse<Response>();
+    response.status(200);
     return next.handle()
       .pipe(
         map((response) => {
           return {
-            success: !!response,
-            message: response ? 'OK' : 'Failed',
+            success: true,
+            message: 'OK',
             data: response
-          } as IBaseResponse<T>;
+          } as IBaseResponse;
         })
       );
   }

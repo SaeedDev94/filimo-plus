@@ -78,21 +78,19 @@ export class AuthService {
   }
 
   async handleVerifyError(guid: string, error: AxiosError): Promise<ILoginVerify> {
-    const statusCode = error.response.status || 0;
-    const errorBody = error.response.data || {};
-    const errors = errorBody.errors || [];
-    const lastError = errors[errors.length - 1] || {};
-    if (statusCode === 403 && errorBody.errors) {
+    const statusCode = error.response.status;
+    const errorBody = error.response.data;
+    if (statusCode === 403 && errorBody?.errors?.length >= 1) {
       const maxDevices = errorBody.errors.find(item => item.type_info === 'get_max_tokens');
       const forceOtp = errorBody.errors.find(item => item.type_info === 'force_mobile_signin');
       if (maxDevices) {
         return this.logoutLastDeviceAndLogin(guid, errorBody.errors[0].uri);
       }
       if (forceOtp) {
-        lastError.detail = 'ورود با رمز عبور امکان پذیر نیست، ورود با پیامک را امتحان کنید';
+        throw new Error('Try login with OTP');
       }
-      return null;
     }
+    throw new Error('Auth verify failed');
   }
 
   async logoutLastDeviceAndLogin(guid: string, sessionsListUri: string): Promise<ILoginVerify> {
