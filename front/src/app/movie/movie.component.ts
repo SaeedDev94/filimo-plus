@@ -31,6 +31,10 @@ export class MovieComponent implements OnInit {
     this.activatedRoute.data.subscribe({
       next: (data) => {
         this.movie = data.movie;
+        document.querySelector('.body').scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       }
     });
   }

@@ -26,6 +26,10 @@ export class TagComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe({
       next: (data) => {
         this.tag = data.tag;
+        document.querySelector('.body').scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       }
     });
     this.infiniteScroll = {
