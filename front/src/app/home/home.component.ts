@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           next: (response) => {
             Log.i('HomeService#next', response);
             if (response.success) {
-              this.home.items = this.home.items.concat(response.data.items);
+              this.home.lists = this.home.lists.concat(response.data.lists);
               this.home.next = response.data.next;
               this.infiniteScroll.disable = !this.home.next;
             }

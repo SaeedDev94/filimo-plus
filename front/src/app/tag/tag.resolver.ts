@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppData } from '../app.data';
 import { TagService } from './tag.service';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { ITag } from '../app.interface';
 import { FullscreenLoading } from '../shared/decorator/fullscreen-loading.decorator';
 import { Log } from '../shared/helper/log.helper';
@@ -16,10 +16,10 @@ export class TagResolver implements Resolve<ITag> {
   }
 
   @FullscreenLoading()
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<ITag> {
+  resolve(route: ActivatedRouteSnapshot): Promise<ITag> {
     const id = route.paramMap.get('id') || '';
     return new Promise<ITag>((resolve, reject) => {
-      const tag: ITag = this.appData.tag.find(item => item.tag === id);
+      const tag: ITag = this.appData.tag.find(item => item.slug === id);
       if (tag) {
         resolve(tag);
         return;

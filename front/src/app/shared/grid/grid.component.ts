@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IItem } from '../../app.interface';
+import { IList } from '../../app.interface';
 
 @Component({
   selector: 'app-grid',
@@ -16,7 +16,7 @@ export class GridComponent implements OnInit {
   @Input()
   homeSpecial = false;
   @Input()
-  item: IItem;
+  list: IList;
   @Input()
   includeTagLink = true;
 

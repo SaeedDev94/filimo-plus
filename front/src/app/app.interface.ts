@@ -19,29 +19,37 @@ export interface IUser {
   mobile: string;
 }
 
-export interface IItem {
+export interface IListHead {
   title: string;
-  tag: string;
-  list: Array<{
-    id: string;
-    image: string;
-    title: string;
-    description: string;
-  }>;
+  tag?: string;
+}
+
+export interface IListItem {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
 }
 
 export interface IList {
-  items: IItem[];
-  next: string;
+  head: IListHead;
+  items: IListItem[];
 }
 
-export interface IHome extends IList {
-  search: string;
-  special: IItem;
+export interface IHome {
+  search?: string;
+  user?: IUser;
+  special?: IList;
+  lists: IList[];
+  next?: string;
 }
 
-export interface ITag extends IItem {
-  next: string;
+export interface ITag {
+  slug: string;
+  multiSection?: boolean;
+  lists?: IList[];
+  listItems?: IListItem[];
+  next?: string;
 }
 
 export interface ISearch {
@@ -69,7 +77,7 @@ export interface IMovie {
   cover: string;
   image: string;
   director: string;
-  suggestions: IItem;
+  suggestions: IList;
   series: Array<{
     id: string;
     title: string;

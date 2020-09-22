@@ -2,12 +2,12 @@
   <div class="the-header">
     <div class="float-right">
       <h1 class="right-title">
-        <span>{{ item.title }}</span>
+        <span>{{ list.head.title }}</span>
       </h1>
     </div>
     <div class="float-left"
-         [routerLink]="'/tag/'+item.tag"
-         *ngIf="item.tag && includeTagLink">
+         [routerLink]="'/tag/'+list.head.tag"
+         *ngIf="list.head.tag && includeTagLink">
       <a class="left-link clickable">
         <span>مشاهده همه</span>
         <span>&nbsp;></span>
@@ -19,7 +19,7 @@
     <div class="the-body">
       <div class="container-fluid">
         <div class="row">
-          <ng-container *ngFor="let movie of item.list; let i = index">
+          <ng-container *ngFor="let movie of list.items; let i = index">
             <div class="the-col normal-margin-bottom col-lg-3 col-md-4 col-sm-6 col-6"
                  *ngIf="(i < 12) || (i >= 12 && specialItemsShowMore)">
               <div class="match-parent clickable"
@@ -55,7 +55,7 @@
     <div class="the-body">
       <div class="container-fluid">
         <div class="row">
-          <ng-container *ngFor="let movie of item.list;">
+          <ng-container *ngFor="let movie of list.items;">
             <div class="the-col col-lg-1 col-md-2 col-sm-3 col-6">
               <div class="match-parent clickable"
                    [routerLink]="'/movie/' + movie.id"

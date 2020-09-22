@@ -1,7 +1,10 @@
 <app-toolbar></app-toolbar>
 <div class="body vertical-padding" #scrollContainer>
-  <app-grid [includeTagLink]="false"
-            [item]="tag"></app-grid>
+  <ng-container
+    *ngFor="let list of tag.lists">
+    <app-grid [includeTagLink]="tag.multiSection"
+              [list]="list"></app-grid>
+  </ng-container>
   <app-infinite-scroll *ngIf="scrollContainer"
                        [container]="scrollContainer"
                        [disable]="infiniteScroll.disable"

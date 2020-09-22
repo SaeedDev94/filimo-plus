@@ -32,7 +32,11 @@ export class TagComponent implements OnInit, OnDestroy {
           next: (response) => {
             Log.i('TagService#next', response);
             if (response.success) {
-              this.tag.list = this.tag.list.concat(response.data.list);
+              if (this.tag.multiSection) {
+                this.tag.lists = this.tag.lists.concat(response.data.lists);
+              } else {
+                this.tag.lists[0].items = this.tag.lists[0].items.concat(response.data.listItems);
+              }
               this.tag.next = response.data.next;
               this.infiniteScroll.disable = !this.tag.next;
             }
@@ -49,7 +53,7 @@ export class TagComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    const index = this.appData.tag.findIndex(item => item.tag === this.tag.tag);
+    const index = this.appData.tag.findIndex(item => item.slug === this.tag.slug);
     if (index !== 1) {
       this.appData.tag[index] = this.tag;
     }
