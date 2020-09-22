@@ -22,12 +22,12 @@ export class AuthService {
   }
 
   @FullscreenLoading()
-  verify(guid: string, tempId: string, account: string, pass: string, otp: boolean): Observable<IBaseResponse<ILoginVerify>> {
+  verify(guid: string, tempId: string, account: string, code: string, otp: boolean): Observable<IBaseResponse<ILoginVerify>> {
     return this.http.post<IBaseResponse<ILoginVerify>>(`${environment.baseUrl}/auth/step/two`, {
       guid,
       tempId,
       account,
-      pass,
+      code,
       otp
     });
   }
