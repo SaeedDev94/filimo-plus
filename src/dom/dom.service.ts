@@ -75,10 +75,15 @@ export class DomService {
     return document.querySelector('#pageLoadMore')?.getAttribute('data-href') || '';
   }
 
-  getHtml(path: string): Promise<string> {
+  getHtml(path: string, setAjaxHeader = false): Promise<string> {
+    const headers = this.http.axiosRef.defaults.headers;
+    if (setAjaxHeader) {
+      headers['X-Requested-With'] = 'XMLHttpRequest';
+    }
     return this.http.get<string>(path, {
       responseType: 'text',
-      baseURL: this.config.get('url.filimo')
+      baseURL: this.config.get('url.filimo'),
+      headers
     }).pipe(
       map((response) => response.data)
     ).toPromise();
@@ -113,7 +118,7 @@ export class DomService {
     return home;
   }
 
-  tag(html: string, slug: string, index: boolean): ITag {
+  tag(html: string, index: boolean, slug?: string): ITag {
     const document = this.getDocument(html);
     const tag: ITag = {
       slug,

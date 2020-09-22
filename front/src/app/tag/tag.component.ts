@@ -23,7 +23,11 @@ export class TagComponent implements OnInit, OnDestroy {
   infiniteScroll: IInfiniteScroll;
 
   ngOnInit(): void {
-    this.tag = this.activatedRoute.snapshot.data.tag;
+    this.activatedRoute.data.subscribe({
+      next: (data) => {
+        this.tag = data.tag;
+      }
+    });
     this.infiniteScroll = {
       disable: !this.tag.next,
       loading: false,

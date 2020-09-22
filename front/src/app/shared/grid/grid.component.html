@@ -23,16 +23,16 @@
             <div class="the-col normal-margin-bottom col-lg-3 col-md-4 col-sm-6 col-6"
                  *ngIf="(i < 12) || (i >= 12 && specialItemsShowMore)">
               <div class="match-parent clickable"
-                   [routerLink]="'/movie/' + movie.id"
-                   [style.backgroundImage]="'url('+movie.image+')'">
-                <img [src]="movie.image" alt="" />
+                   [routerLink]="'/movie/' + movie?.id"
+                   [style.backgroundImage]="'url('+movie?.image+')'">
+                <img [src]="movie?.image" alt="" />
                 <div class="overlay-back"></div>
                 <div class="overlay-front">
                   <div class="title">
-                    <span>{{ movie.title }}</span>
+                    <span>{{ movie?.title }}</span>
                   </div>
                   <div class="description">
-                    <span>{{ movie.description }}</span>
+                    <span>{{ movie?.description }}</span>
                   </div>
                 </div>
               </div>
@@ -58,17 +58,17 @@
           <ng-container *ngFor="let movie of list.items;">
             <div class="the-col col-lg-1 col-md-2 col-sm-3 col-6">
               <div class="match-parent clickable"
-                   [routerLink]="'/movie/' + movie.id"
-                   [style.backgroundImage]="'url('+movie.image+')'">
-                <img [src]="movie.image" alt="" />
+                   [routerLink]="'/movie/' + movie?.id"
+                   [style.backgroundImage]="'url('+movie?.image+')'">
+                <img [src]="movie?.image" alt="" />
                 <div class="overlay-back"></div>
                 <div class="overlay-front">
                   <div class="description">
-                    <span>{{ movie.description }}</span>
+                    <span>{{ movie?.description }}</span>
                   </div>
                 </div>
-                <div class="bottom-title" [title]="movie.title">
-                  <span>{{ movie.title }}</span>
+                <div class="bottom-title" [title]="movie?.title">
+                  <span>{{ movie?.title }}</span>
                 </div>
               </div>
             </div>

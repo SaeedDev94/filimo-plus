@@ -24,8 +24,8 @@ export class HomeController {
 
   @Post('next')
   @UseInterceptors(WrapResponseInterceptor)
-  async next(@Body() body: {next: string}): Promise<IHome> {
-    const html = await this.domService.getHtml(new URL(body.next).pathname);
+  async next(@Body('next') next: string): Promise<IHome> {
+    const html = await this.domService.getHtml(new URL(next).pathname, true);
     return this.domService.home(html, false);
   }
 }

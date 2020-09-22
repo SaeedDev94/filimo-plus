@@ -30,7 +30,7 @@ export interface IHome {
 }
 
 export interface ITag {
-  slug: string;
+  slug?: string;
   multiSection?: boolean;
   lists?: IList[];
   listItems?: IListItem[];
