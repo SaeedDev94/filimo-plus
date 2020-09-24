@@ -110,18 +110,12 @@ export interface IDownloadRequest {
   resolution: string;
   subtitle: string;
   image: string;
-  tracks: Array<string>;
+  tracks: string[];
 }
 
-export interface IDownload {
-  id: string;
-  image: string;
-  title: string;
-  quality: string;
-  resolution: string;
-  movie: string;
-  subtitle: string;
+export interface IDownload extends IDownloadRequest {
   progress: number;
+  movie: string;
   deleted?: boolean;
 }
 
