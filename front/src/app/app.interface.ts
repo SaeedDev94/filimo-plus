@@ -66,32 +66,40 @@ export interface IInfiniteScroll {
   callback: () => void;
 }
 
+export interface IMovieDescription {
+  title: string;
+  text: string;
+}
+
+export interface IMovieSeries {
+  id: string;
+  title: string;
+}
+
+export interface IMovieDownloadVariant {
+  quality: string;
+  resolution: string;
+  link: string;
+}
+
+export interface IMovieDownload {
+  variants: IMovieDownloadVariant[];
+  subtitle: string;
+  tracks: string[];
+  playlist: string;
+}
+
 export interface IMovie {
   id: string;
-  originalId?: string;
+  slug?: string;
   title: string;
-  descriptions: Array<{
-    title: string;
-    text: string;
-  }>;
+  descriptions: IMovieDescription[];
   cover: string;
   image: string;
   director: string;
   suggestions: IList;
-  series: Array<{
-    id: string;
-    title: string;
-  }>;
-  download: {
-    subtitle: string;
-    variants: Array<{
-      quality: string;
-      resolution: string;
-      link: string;
-    }>;
-    tracks: Array<string>;
-    playlist: string;
-  };
+  series: IMovieSeries[];
+  download?: IMovieDownload;
 }
 
 export interface IDownloadRequest {

@@ -1,6 +1,16 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { JSDOM } from 'jsdom';
-import { IHome, IList, IListHead, IListItem, ITag, IUser } from './dom.interface';
+import {
+  IHome,
+  IList,
+  IListHead,
+  IListItem,
+  IMovie,
+  IMovieDescription,
+  IMovieSeries,
+  ITag,
+  IUser,
+} from './dom.interface';
 import { ConfigService } from '@nestjs/config';
 import { map } from 'rxjs/operators';
 
@@ -134,5 +144,75 @@ export class DomService {
     }
     tag.listItems = this.listItems(document.querySelectorAll('.item'));
     return tag;
+  }
+
+  movie(html: string): IMovie {
+    const document = this.getDocument(html);
+    //
+    const playLinkElement = document.querySelector('.movie-actions .left-side a#moreinfo_login');
+    const id: string = playLinkElement ? playLinkElement.getAttribute('href').split('/').pop() : '';
+    //
+    const titleElement = document.querySelector('.movie-single .movie-title .fa');
+    const title: string = titleElement ? titleElement.textContent.trim() : '';
+    //
+    const descriptions: IMovieDescription[] = (() => {
+      const data: IMovieDescription[] = [];
+      document.querySelectorAll('.section-gallery .gallery_each-movie').forEach((container: Element) => {
+        const descriptionTitleElement = container.querySelector('.gallery_each-movie_title');
+        const descriptionTextElement = container.querySelector('p');
+        if (descriptionTitleElement && descriptionTextElement) {
+          data.push({
+            title: descriptionTitleElement.textContent.trim(),
+            text: descriptionTextElement.textContent.trim()
+          } as IMovieDescription);
+        }
+      });
+      return data;
+    })();
+    //
+    const coverElement = document.querySelector('.movie-single .single-intro');
+    const cover: string = coverElement ? (coverElement as any).style.backgroundImage.slice(4, -1).replace(/['"]/g, '') : '';
+    //
+    const imageElement = document.querySelector('.movie-single .movie-poster img');
+    const image: string = imageElement ? imageElement.getAttribute('data-src') : '';
+    //
+    let director = '';
+    const directorElement: Element = document.querySelector('.movie-single .movie-director');
+    if (directorElement) {
+      director = directorElement.textContent
+        .trim()
+        .split('\n')
+        .map(item => item.trim())
+        .filter(item => !!item.trim())
+        .join(' ');
+    }
+    //
+    const suggestions: IList = this.lists(document)[0];
+    //
+    const series: IMovieSeries[] = (() => {
+      const data: IMovieSeries[] = [];
+      document.querySelectorAll('.section-episodes .accordion-item').forEach((container) => {
+        const episodeTitleElement = container.querySelector('.right .title');
+        const episodeLinkElement = container.querySelector('.left a');
+        if (episodeTitleElement && episodeLinkElement) {
+          data.push({
+            id: episodeLinkElement.getAttribute('href').split('/').pop(),
+            title: episodeTitleElement.textContent.trim()
+          } as IMovieSeries);
+        }
+      });
+      return data;
+    })();
+    //
+    return {
+      id,
+      title,
+      descriptions,
+      cover,
+      image,
+      director,
+      suggestions,
+      series
+    };
   }
 }

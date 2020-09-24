@@ -36,3 +36,26 @@ export interface ITag {
   listItems?: IListItem[];
   next?: string;
 }
+
+export interface IMovieDescription {
+  title: string;
+  text: string;
+}
+
+export interface IMovieSeries {
+  id: string;
+  title: string;
+}
+
+export interface IMovie<T = any> {
+  id: string;
+  slug?: string;
+  title: string;
+  descriptions: IMovieDescription[];
+  cover: string;
+  image: string;
+  director: string;
+  suggestions: IList;
+  series: IMovieSeries[];
+  download?: T;
+}

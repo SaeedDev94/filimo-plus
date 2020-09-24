@@ -10,7 +10,6 @@ import { SharedModule } from '../shared/shared.module';
     DomService
   ],
   exports: [
-    SharedModule,
     DomService
   ]
 })

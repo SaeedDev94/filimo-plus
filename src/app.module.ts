@@ -4,6 +4,7 @@ import { urlConfig } from './config/url.config';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { TagModule } from './tag/tag.module';
+import { MovieModule } from './movie/movie.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { TagModule } from './tag/tag.module';
     }),
     AuthModule,
     HomeModule,
-    TagModule
+    TagModule,
+    MovieModule
   ],
 })
 export class AppModule {}

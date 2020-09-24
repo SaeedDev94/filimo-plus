@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { IMovie } from '../app.interface';
 import { MovieService } from './movie.service';
 import { FullscreenLoading } from '../shared/decorator/fullscreen-loading.decorator';
@@ -17,12 +17,11 @@ export class MovieResolver implements Resolve<IMovie> {
 
   @FullscreenLoading()
   resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    route: ActivatedRouteSnapshot
   ): Promise<IMovie> {
     const id = route.paramMap.get('id') || '';
     return new Promise<IMovie>((resolve, reject) => {
-      const movie: IMovie = this.appData.movie.find(item => item.id === id || item.originalId === id);
+      const movie: IMovie = this.appData.movie.find(item => item.id === id || item.slug === id);
       if (movie) {
         resolve(movie);
         return;
