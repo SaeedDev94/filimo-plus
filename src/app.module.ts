@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { TagModule } from './tag/tag.module';
 import { MovieModule } from './movie/movie.module';
+import { DownloadModule } from './download/download.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { MovieModule } from './movie/movie.module';
     AuthModule,
     HomeModule,
     TagModule,
-    MovieModule
+    MovieModule,
+    DownloadModule
   ],
 })
 export class AppModule {}
