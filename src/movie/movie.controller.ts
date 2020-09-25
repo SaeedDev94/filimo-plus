@@ -23,7 +23,12 @@ export class MovieController {
       if (movie.id !== slug) {
         movie.slug = slug;
       }
-      movie.download = await this.downloadService.get(movie.id);
+      try {
+        movie.download = await this.downloadService.get(movie.id);
+      } catch (error) {
+        console.log(error);
+        movie.download = null;
+      }
     }
     return movie;
   }
