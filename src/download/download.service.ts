@@ -23,7 +23,7 @@ export class DownloadService {
   ) {
   }
 
-  private movieDir: string = join(process.cwd(), 'public', 'movie');
+  private movieDir: string = join(process.cwd(), 'movie');
 
   private getText(url: string): Promise<string> {
     return this.http.get<string>(url, {

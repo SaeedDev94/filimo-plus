@@ -8,7 +8,12 @@ async function bootstrap() {
   if (process.env.NODE_ENV !== 'production') {
     app.enableCors();
   }
-  app.useStaticAssets(join(process.cwd(), 'public'));
+  app.useStaticAssets(join(process.cwd(), 'movie'), {
+    prefix: '/movie'
+  });
+  app.useStaticAssets(join(process.cwd(), 'view'), {
+    prefix: '/'
+  });
   await app.listen(1399);
 }
 

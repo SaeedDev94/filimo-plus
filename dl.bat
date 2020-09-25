@@ -1,4 +1,4 @@
-echo lock > public\movie\dl.lock
+echo lock > movie\dl.lock
 if NOT "%~3"=="" if NOT "%~4"=="" goto multipleInput
 goto singleInput
 
@@ -11,6 +11,6 @@ ffmpeg -i %1 -c:v copy -c:a copy -bsf:a aac_adtstoasc -y %2
 goto done
 
 :done
-if exist "public\movie\dl.lock" (
-  del "public\movie\dl.lock"
+if exist "movie\dl.lock" (
+  del "movie\dl.lock"
 )

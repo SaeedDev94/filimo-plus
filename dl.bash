@@ -7,6 +7,6 @@ else
   ffmpeg -i "$1" -c:v copy -c:a copy -bsf:a aac_adtstoasc -y "$2" </dev/null >/dev/null 2> "$3" &
 fi
 pid=$!
-echo $pid > public/movie/dl.lock
+echo $pid > movie/dl.lock
 wait "$pid"
-rm -f public/movie/dl.lock
+rm -f movie/dl.lock
