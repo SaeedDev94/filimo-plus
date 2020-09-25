@@ -11,7 +11,7 @@ async function bootstrap() {
   app.useStaticAssets(join(process.cwd(), 'movie'), {
     prefix: '/movie'
   });
-  app.useStaticAssets(join(process.cwd(), 'view'), {
+  app.useStaticAssets(join(process.cwd(), 'dist-front'), {
     prefix: '/'
   });
   await app.listen(1399);

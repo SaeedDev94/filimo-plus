@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "front", "dist", "view", "movie", "**/*spec.ts"]
+  "exclude": ["node_modules", "front", "dist", "dist-front", "movie", "**/*spec.ts"]
 }
