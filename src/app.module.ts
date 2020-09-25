@@ -6,6 +6,7 @@ import { HomeModule } from './home/home.module';
 import { TagModule } from './tag/tag.module';
 import { MovieModule } from './movie/movie.module';
 import { DownloadModule } from './download/download.module';
+import { PlayModule } from './play/play.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { DownloadModule } from './download/download.module';
     HomeModule,
     TagModule,
     MovieModule,
-    DownloadModule
+    DownloadModule,
+    PlayModule
   ],
 })
 export class AppModule {}

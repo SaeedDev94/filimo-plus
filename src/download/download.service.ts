@@ -23,13 +23,7 @@ export class DownloadService {
   ) {
   }
 
-  private movieDir = join(process.cwd(), 'public', 'movie');
-
-  private createMovieDirIfNotExists(): void {
-    if (!existsSync(this.movieDir)) {
-      mkdirSync(this.movieDir);
-    }
-  }
+  private movieDir: string = join(process.cwd(), 'public', 'movie');
 
   private getText(url: string): Promise<string> {
     return this.http.get<string>(url, {
@@ -37,6 +31,16 @@ export class DownloadService {
     }).pipe(
       map((response) => response.data)
     ).toPromise();
+  }
+
+  getMovieDir(): string {
+    return this.movieDir;
+  }
+
+  createMovieDirIfNotExists(): void {
+    if (!existsSync(this.movieDir)) {
+      mkdirSync(this.movieDir);
+    }
   }
 
   async get(id: string): Promise<IMovieDownload> {

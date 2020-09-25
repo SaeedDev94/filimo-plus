@@ -5,10 +5,10 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useStaticAssets(join(process.cwd(), 'public'));
   if (process.env.NODE_ENV !== 'production') {
     app.enableCors();
   }
+  app.useStaticAssets(join(process.cwd(), 'public'));
   await app.listen(1399);
 }
 
