@@ -3,6 +3,8 @@ import { default as VideoPlayer, VideoJsPlayer, VideoJsPlayerOptions } from 'vid
 import { ActivatedRoute } from '@angular/router';
 import { IPlay } from '../app.interface';
 import { environment } from '../../environments/environment';
+import { FullscreenLoadingService } from '../core/fullscreen-loading.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-play',
@@ -12,19 +14,20 @@ import { environment } from '../../environments/environment';
 })
 export class PlayComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private fullscreenLoadingService: FullscreenLoadingService
+  ) {
+  }
+
   @ViewChild('player', {static: true})
   element: ElementRef;
   player: VideoJsPlayer;
   keyUpCallback: any;
   baseUrl = environment.baseUrl;
-
-  constructor(
-    private activatedRoute: ActivatedRoute
-  ) {
-  }
+  fullscreenLoadingSubscription: Subscription;
 
   ngOnInit(): void {
-    new VideoPlayer.AudioTrack()
     const play: IPlay = this.activatedRoute.snapshot.data.play;
     const options: VideoJsPlayerOptions = {
       controls: true,
@@ -53,6 +56,13 @@ export class PlayComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
     document.addEventListener('keyup', this.keyUpCallback);
+    this.fullscreenLoadingSubscription = this.fullscreenLoadingService.subject$.subscribe({
+      next: (value) => {
+        if (value) {
+          this.player?.pause();
+        }
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -66,6 +76,7 @@ export class PlayComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.player?.dispose();
     document.removeEventListener('keyup', this.keyUpCallback);
+    this.fullscreenLoadingSubscription?.unsubscribe();
   }
 
 }
