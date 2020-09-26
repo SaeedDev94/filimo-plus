@@ -19,7 +19,7 @@ export class TagResolver implements Resolve<ITag> {
   resolve(route: ActivatedRouteSnapshot): Promise<ITag> {
     const id = route.paramMap.get('id') || '';
     return new Promise<ITag>((resolve, reject) => {
-      const tag: ITag = this.appData.tag.find(item => item.slug === id);
+      const tag: ITag = this.appData.get<ITag[]>('tag').find(item => item.slug === id);
       if (tag) {
         resolve(tag);
         return;
@@ -28,7 +28,7 @@ export class TagResolver implements Resolve<ITag> {
         next: (response) => {
           Log.i('TagResolver#resolve', response);
           if (response.success) {
-            this.appData.tag.push(response.data);
+            this.appData.data.tag.push(response.data);
             resolve(response.data);
             return;
           }

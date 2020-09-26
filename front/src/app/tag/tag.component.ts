@@ -61,9 +61,9 @@ export class TagComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    const index = this.appData.tag.findIndex(item => item.slug === this.tag.slug);
+    const index = this.appData.data.tag.findIndex(item => item.slug === this.tag.slug);
     if (index !== 1) {
-      this.appData.tag[index] = this.tag;
+      this.appData.data.tag[index] = this.tag;
     }
   }
 

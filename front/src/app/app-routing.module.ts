@@ -8,6 +8,7 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always',
     children: [
       {path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},
       {path: 'tag/:id', loadChildren: () => import('./tag/tag.module').then(m => m.TagModule)},

@@ -15,7 +15,7 @@ export class SearchService {
   }
 
   query(keyword: string): Observable<IBaseResponse<ISearch[]>> {
-    const path = this.appData.home.search + encodeURIComponent(keyword);
+    const path = this.appData.data.home.search + encodeURIComponent(keyword);
     return this.http.post<IBaseResponse<ISearch[]>>(`${environment.baseUrl}/search/index`, {path});
   }
 }

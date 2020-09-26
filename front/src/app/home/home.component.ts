@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   infiniteScroll: IInfiniteScroll;
 
   ngOnInit(): void {
-    this.home = this.appData.home;
+    this.home = this.appData.data.home;
     this.infiniteScroll = {
       disable: !this.home.next,
       loading: false,
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.appData.home = this.home;
+    this.appData.data.home = this.home;
   }
 
 }

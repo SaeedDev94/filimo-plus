@@ -21,7 +21,7 @@ export class MovieResolver implements Resolve<IMovie> {
   ): Promise<IMovie> {
     const id = route.paramMap.get('id') || '';
     return new Promise<IMovie>((resolve, reject) => {
-      const movie: IMovie = this.appData.movie.find(item => item.id === id || item.slug === id);
+      const movie: IMovie = this.appData.get<IMovie[]>('movie').find(item => item.id === id || item.slug === id);
       if (movie) {
         resolve(movie);
         return;
@@ -31,7 +31,7 @@ export class MovieResolver implements Resolve<IMovie> {
         next: (response) => {
           Log.i('MovieResolver#resolve', response);
           if (response.success) {
-            this.appData.movie.push(response.data);
+            this.appData.data.movie.push(response.data);
             resolve(response.data);
             return;
           }

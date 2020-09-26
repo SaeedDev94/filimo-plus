@@ -42,7 +42,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.user = this.appData.user;
+    this.user = this.appData.data.user;
   }
 
   ngAfterViewInit(): void {
@@ -71,6 +71,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.authService.logout().subscribe({
       complete: () => {
         localStorage.removeItem('jwt_token');
+        this.appData.invalidateCache();
         this.stateService.loggedIn = false;
         this.router.navigate(['login']);
       }

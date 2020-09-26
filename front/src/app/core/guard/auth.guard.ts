@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CanActivate, Router } from '@angular/router';
 import { Log } from '../../shared/helper/log.helper';
 import { AppData } from '../../app.data';
-import { IBaseResponse, IHome } from '../../app.interface';
+import { IBaseResponse, IHome, IUser } from '../../app.interface';
 import { environment } from '../../../environments/environment';
 import { StateService } from '../state.service';
 import { FullscreenLoading } from '../../shared/decorator/fullscreen-loading.decorator';
@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
   @FullscreenLoading()
   canActivate(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      if (this.stateService.loggedIn && this.appData.user) {
+      if (this.stateService.loggedIn && this.appData.get<IUser>('user')) {
         resolve(true);
         return;
       }
@@ -32,8 +32,8 @@ export class AuthGuard implements CanActivate {
           if (response.success) {
             Log.i('AuthGuard#canActive', response);
             this.stateService.loggedIn = true;
-            this.appData.user = response.data.user;
-            this.appData.home = {
+            this.appData.data.user = response.data.user;
+            this.appData.data.home = {
               search: response.data.search,
               special: response.data.special,
               lists: response.data.lists,

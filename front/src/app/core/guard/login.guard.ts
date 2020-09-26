@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StateService } from '../state.service';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 
 @Injectable()
 export class LoginGuard implements CanActivate {
@@ -11,9 +11,7 @@ export class LoginGuard implements CanActivate {
   ) {
   }
 
-  canActivate(
-    route: ActivatedRouteSnapshot, state: RouterStateSnapshot
-  ): boolean {
+  canActivate(): boolean {
     if (this.stateService.loggedIn) {
       this.router.navigate(['home']);
       return false;
