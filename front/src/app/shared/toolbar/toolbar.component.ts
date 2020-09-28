@@ -66,6 +66,11 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialog.close();
   }
 
+  navigateHome() {
+    this.appData.invalidateCache();
+    this.router.navigate(['home']);
+  }
+
   logout() {
     this.closeDialog();
     this.authService.logout().subscribe({

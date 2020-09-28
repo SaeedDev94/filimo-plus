@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:1399',
-  cacheExpireTime: 10 * 60 * 1000, // 10 minutes
+  baseUrl: 'http://localhost:1399'
 };
 
 /*
