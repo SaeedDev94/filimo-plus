@@ -100,7 +100,9 @@ export class DomService {
   }
 
   authenticated(html: string): boolean {
-    return !![...html.matchAll(/user\.username.*= '(.*)'/g)].map(i => i[1]).pop();
+    const match = [...html.matchAll(/user\.username.*='(.*)';uxEvents/g)].map(i => i[1]).pop();
+    console.log(match);
+    return !!match;
   }
 
   home(html: string, index: boolean): IHome {

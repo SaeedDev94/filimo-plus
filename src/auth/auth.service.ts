@@ -13,18 +13,29 @@ export class AuthService {
   ) {
   }
 
-  getGuid(): Promise<string> {
+  private getGuid(html: string | undefined): string {
+    if (!html) throw new Error('');
+    const guid = [...html.matchAll(/guid:"(.*)",additionalGet/g)].map(i => i[1])[0];
+    if (!guid) throw new Error('GUID not found');
+    return guid;
+  }
+
+  private init(): Promise<{
+    guid: string
+  }> {
     return this.http.get<string>(`${this.config.get('url.filimo')}/signin`, {
       responseType: 'text',
     }).pipe(
       map((response) => {
-        const html = response.data || '';
-        return [...html.matchAll(/guid: "(.*)"/g)].map(i => i[1])[0];
+        const guid = this.getGuid(response.data);
+        return {
+          guid
+        };
       })
     ).toPromise();
   }
 
-  getTempId(guid: string): Promise<string> {
+  private getTempId(guid: string): Promise<string> {
     return this.http.post<any>(`${this.config.get('url.filimo')}/api/fa/v1/user/Authenticate/auth`, {
       guid
     }).pipe(
@@ -35,20 +46,19 @@ export class AuthService {
   }
 
   async request(payload: ILoginRequestPayload): Promise<ILoginRequest> {
-    const guid = await this.getGuid();
-    if (!guid) throw new Error('guid not found');
-    const tempId = await this.getTempId(guid);
-    if (!tempId) throw new Error('tempId not found');
+    const init = await this.init();
+    const tempId = await this.getTempId(init.guid);
+    if (!tempId) throw new Error('temp_id not found');
     return this.http.post<any>(`${this.config.get('url.filimo')}/api/fa/v1/user/Authenticate/signin_step1`, {
-      guid,
+      guid: init.guid,
       'temp_id': tempId,
       'codepass_type': (payload.otp) ? 'otp' : 'pass',
       account: payload.account
     }).pipe(
       map((response) => {
         return {
-          guid,
-          tempId: response.data?.data?.attributes?.temp_id
+          guid: init.guid,
+          tempId: response.data?.data?.attributes?.temp_id,
         } as ILoginRequest;
       })
     ).toPromise();
