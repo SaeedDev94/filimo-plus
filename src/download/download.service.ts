@@ -45,8 +45,8 @@ export class DownloadService {
 
   async get(id: string): Promise<IMovieDownload> {
     const html = await this.getText(`${this.config.get('url.filimo')}/w/${id}`);
-    const playerData =  JSON.parse(
-      [...html.matchAll(/var player_data = (.*);/g)].map(i => i[1]).pop()
+    const playerData = JSON.parse(
+      [...html.matchAll(/var player_data=(.*);if/g)].map(i => i[1]).pop()
     );
     let playlistUrl = '';
     const multiSRC = playerData.multiSRC || [];
