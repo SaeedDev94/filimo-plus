@@ -100,7 +100,7 @@ export class DomService {
   }
 
   authenticated(html: string): boolean {
-    return !![...html.matchAll(/user\.username.*='(.*)';uxEvents/g)].map(i => i[1]).pop();
+    return !![...html.matchAll(/user\.username='(.*)';uxEvents\.user\.name/g)].map(i => i[1]).pop();
   }
 
   home(html: string, index: boolean): IHome {
@@ -110,11 +110,11 @@ export class DomService {
       next: this.nextLink(document)
     };
     if (index) {
-      home.search = [...html.matchAll(/SEARCH_URL = "(.*)"/g)].map(i => i[1]).pop();
+      home.search = [...html.matchAll(/SEARCH_URL="(.*)",SEARCH_ANALYTIC_URL/g)].map(i => i[1]).pop();
       home.user = {
-        id: [...html.matchAll(/user\.userId.*= (.*);/g)].map(i => i[1]).pop(),
-        name: [...html.matchAll(/user\.name.*= '(.*)'/g)].map(i => i[1]).pop(),
-        mobile: [...html.matchAll(/user\.mobile.*= '(.*)'/g)].map(i => i[1]).pop()
+        id: [...html.matchAll(/user\.userId=(.*);uxEvents\.user\.userLang/g)].map(i => i[1]).pop(),
+        name: [...html.matchAll(/user\.name='(.*)';uxEvents\.user\.email/g)].map(i => i[1]).pop(),
+        mobile: [...html.matchAll(/user\.mobile='(.*)';uxEvents\.user\.fmobile/g)].map(i => i[1]).pop()
       } as IUser;
       home.special = (() => {
         let list: IList = null;
