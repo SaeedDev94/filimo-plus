@@ -42,7 +42,7 @@ export interface IMovieDescription {
   text: string;
 }
 
-export interface IMovieSeries {
+export interface IEpisode {
   id: string;
   title: string;
 }
@@ -56,6 +56,6 @@ export interface IMovie<T = any> {
   image: string;
   director: string;
   suggestions: IList;
-  series: IMovieSeries[];
+  series: IEpisode[];
   download?: T;
 }

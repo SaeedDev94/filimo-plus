@@ -7,7 +7,7 @@ import {
   IListItem,
   IMovie,
   IMovieDescription,
-  IMovieSeries,
+  IEpisode,
   ITag,
   IUser,
 } from './dom.interface';
@@ -17,6 +17,7 @@ import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class DomService {
+  private episodeLinkElement: any;
   constructor(private http: HttpService, private config: ConfigService) {}
 
   private getDocument(html: string): Document {
@@ -167,18 +168,37 @@ export class DomService {
     return tag;
   }
 
+  getEpisodes(container: Element): IEpisode[] {
+    const episodes: IEpisode[] = [];
+    container
+      .querySelectorAll('ul.episodev2_content li')
+      .forEach((li: Element) => {
+        const linkElement = li.querySelector(
+          '.episodev2_content-summery-title a',
+        );
+        if (linkElement)
+          episodes.push({
+            id: linkElement.getAttribute('href').split('/').pop(),
+            title: linkElement.textContent.trim(),
+          });
+      });
+    return episodes;
+  }
+
   movie(html: string): IMovie {
     const document = this.getDocument(html);
+    const head = document.querySelector('.details_one');
+    const headWrapper = head.querySelector('.details_wrapper');
     //
-    const playLinkElement = document.querySelector(
-      '.movie-actions .left-side a#moreinfo_login',
+    const playLinkElement = headWrapper.querySelector(
+      '.details_actions a.ui-btn-purchase',
     );
     const id: string = playLinkElement
       ? playLinkElement.getAttribute('href').split('/').pop()
       : '';
     //
-    const titleElement = document.querySelector(
-      '.movie-single .movie-title .fa',
+    const titleElement = headWrapper.querySelector(
+      '#movieToggleDetails .fa-title',
     );
     const title: string = titleElement ? titleElement.textContent.trim() : '';
     //
@@ -201,51 +221,29 @@ export class DomService {
       return data;
     })();
     //
-    const coverElement = document.querySelector('.movie-single .single-intro');
+    const coverElement = head.querySelector('.details');
     const cover: string = coverElement
       ? (coverElement as any).style.backgroundImage
           .slice(4, -1)
           .replace(/['"]/g, '')
       : '';
     //
-    const imageElement = document.querySelector(
-      '.movie-single .movie-poster img',
-    );
+    const imageElement = headWrapper.querySelector('img.ds-media_image');
     const image: string = imageElement
       ? imageElement.getAttribute('data-src')
       : '';
     //
-    let director = '';
-    const directorElement: Element = document.querySelector(
-      '.movie-single .movie-director',
+    const directorElement: Element = headWrapper.querySelector(
+      '.details_poster-description-director a',
     );
-    if (directorElement) {
-      director = directorElement.textContent
-        .trim()
-        .split('\n')
-        .map((item) => item.trim())
-        .filter((item) => !!item.trim())
-        .join(' ');
-    }
+    const director = directorElement ? directorElement.textContent.trim() : '';
     //
     const suggestions: IList = this.lists(document)[0];
     //
-    const series: IMovieSeries[] = (() => {
-      const data: IMovieSeries[] = [];
-      document
-        .querySelectorAll('.section-episodes .accordion-item')
-        .forEach((container) => {
-          const episodeTitleElement = container.querySelector('.right .title');
-          const episodeLinkElement = container.querySelector('.left a');
-          if (episodeTitleElement && episodeLinkElement) {
-            data.push({
-              id: episodeLinkElement.getAttribute('href').split('/').pop(),
-              title: episodeTitleElement.textContent.trim(),
-            } as IMovieSeries);
-          }
-        });
-      return data;
-    })();
+    const episodesContainer = document.querySelector('.episodev2');
+    const series: IEpisode[] = episodesContainer
+      ? this.getEpisodes(episodesContainer)
+      : [];
     //
     return {
       id,
