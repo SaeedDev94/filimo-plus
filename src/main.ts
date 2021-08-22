@@ -9,10 +9,10 @@ async function bootstrap() {
     app.enableCors();
   }
   app.useStaticAssets(join(process.cwd(), 'movie'), {
-    prefix: '/movie'
+    prefix: '/movie',
   });
   app.useStaticAssets(join(process.cwd(), 'dist-front'), {
-    prefix: '/'
+    prefix: '/',
   });
   await app.listen(1399);
 }

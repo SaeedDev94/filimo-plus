@@ -5,7 +5,6 @@ import { AxiosError } from 'axios';
 
 @Catch()
 export class AllExceptionsFilterService implements ExceptionFilter {
-
   catch(exception: any, host: ArgumentsHost): any {
     if (exception.isAxiosError) {
       this.logAxiosError(exception);
@@ -14,12 +13,11 @@ export class AllExceptionsFilterService implements ExceptionFilter {
     }
     const context = host.switchToHttp();
     const res = context.getResponse<Response>();
-    res.status(200)
-      .json(({
-        success: false,
-        message: exception.message || 'Somethings went wrong !!',
-        data: null
-      }) as IBaseResponse<null>);
+    res.status(200).json({
+      success: false,
+      message: exception.message || 'Somethings went wrong !!',
+      data: null,
+    } as IBaseResponse<null>);
   }
 
   logAxiosError(error: AxiosError): void {

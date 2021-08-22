@@ -3,14 +3,8 @@ import { DomService } from './dom.service';
 import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [
-    SharedModule
-  ],
-  providers: [
-    DomService
-  ],
-  exports: [
-    DomService
-  ]
+  imports: [SharedModule],
+  providers: [DomService],
+  exports: [DomService],
 })
 export class DomModule {}

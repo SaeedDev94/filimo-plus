@@ -4,14 +4,8 @@ import { AuthService } from './auth.service';
 import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [
-    SharedModule
-  ],
-  controllers: [
-    AuthController
-  ],
-  providers: [
-    AuthService
-  ]
+  imports: [SharedModule],
+  controllers: [AuthController],
+  providers: [AuthService],
 })
 export class AuthModule {}

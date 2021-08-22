@@ -6,11 +6,7 @@ import { URL } from 'url';
 
 @Controller('tag')
 export class TagController {
-
-  constructor(
-    private domService: DomService
-  ) {
-  }
+  constructor(private domService: DomService) {}
 
   @Post('index')
   @UseInterceptors(WrapResponseInterceptor)

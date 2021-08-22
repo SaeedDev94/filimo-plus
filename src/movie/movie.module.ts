@@ -4,12 +4,7 @@ import { DomModule } from '../dom/dom.module';
 import { DownloadModule } from '../download/download.module';
 
 @Module({
-  imports: [
-    DomModule,
-    DownloadModule
-  ],
-  controllers: [
-    MovieController
-  ]
+  imports: [DomModule, DownloadModule],
+  controllers: [MovieController],
 })
 export class MovieModule {}

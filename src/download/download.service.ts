@@ -1,4 +1,4 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import {
@@ -8,29 +8,31 @@ import {
   readFileSync,
   rmdirSync,
   statSync,
-  writeFileSync
+  writeFileSync,
 } from 'fs';
-import { IDownload, IDownloadRequest, IMovieDownload, IMovieDownloadVariant } from './download.interface';
+import {
+  IDownload,
+  IDownloadRequest,
+  IMovieDownload,
+  IMovieDownloadVariant,
+} from './download.interface';
 import { map } from 'rxjs/operators';
 import { exec } from 'child_process';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class DownloadService {
-
-  constructor(
-    private http: HttpService,
-    private config: ConfigService
-  ) {
-  }
+  constructor(private http: HttpService, private config: ConfigService) {}
 
   private movieDir: string = join(process.cwd(), 'movie');
 
   private getText(url: string): Promise<string> {
-    return this.http.get<string>(url, {
-      responseType: 'text'
-    }).pipe(
-      map((response) => response.data)
-    ).toPromise();
+    return this.http
+      .get<string>(url, {
+        responseType: 'text',
+      })
+      .pipe(map((response) => response.data))
+      .toPromise();
   }
 
   getMovieDir(): string {
@@ -46,7 +48,7 @@ export class DownloadService {
   async get(id: string): Promise<IMovieDownload> {
     const html = await this.getText(`${this.config.get('url.filimo')}/w/${id}`);
     const playerData = JSON.parse(
-      [...html.matchAll(/var player_data=(.*);if/g)].map(i => i[1]).pop()
+      [...html.matchAll(/var player_data=(.*);if/g)].map((i) => i[1]).pop(),
     );
     let playlistUrl = '';
     const multiSRC = playerData.multiSRC || [];
@@ -58,14 +60,20 @@ export class DownloadService {
       });
     });
     const playlist = await this.getText(playlistUrl);
-    const variants: IMovieDownloadVariant[] = [...playlist.matchAll(/#([0-9]+(.*?))\n(.*)RESOLUTION=(.*)\n(.*)/g)].map((variant) => {
+    const variants: IMovieDownloadVariant[] = [
+      ...playlist.matchAll(/#([0-9]+(.*?))\n(.*)RESOLUTION=(.*)\n(.*)/g),
+    ].map((variant) => {
       return {
         quality: variant[1] || '',
         resolution: variant[4] ? variant[4].split(',')[0] : '',
-        link: variant[5] || ''
+        link: variant[5] || '',
       } as IMovieDownloadVariant;
     });
-    const tracks: string[] = [...playlist.matchAll(/GROUP-ID="audio"(.*)URI="(.*)"/g)].slice(0, 2).map(i => i[2]);
+    const tracks: string[] = [
+      ...playlist.matchAll(/GROUP-ID="audio"(.*)URI="(.*)"/g),
+    ]
+      .slice(0, 2)
+      .map((i) => i[2]);
     let subtitle = '';
     (playerData.tracks || []).forEach((track) => {
       if (!subtitle && track.srclang === 'fa') {
@@ -75,8 +83,8 @@ export class DownloadService {
     return {
       variants,
       subtitle,
-      tracks: (playerData.multiAudio && tracks.length >= 2) ? tracks : [],
-      playlist
+      tracks: playerData.multiAudio && tracks.length >= 2 ? tracks : [],
+      playlist,
     };
   }
 
@@ -101,17 +109,29 @@ export class DownloadService {
       writeFileSync(subtitleFile, subtitle);
     }
     if (process.platform === 'win32') {
-      exec(`start /B ${process.cwd()}\\dl.bat "${download.link}" "${videoFile}" "${download.tracks[0] || ''}" "${download.tracks[1] || ''}" <nul >nul 2> "${logFile}"`, (error) => {
-        if (error) {
-          console.log('Windows bat run error:', error);
-        }
-      });
+      exec(
+        `start /B ${process.cwd()}\\dl.bat "${download.link}" "${videoFile}" "${
+          download.tracks[0] || ''
+        }" "${download.tracks[1] || ''}" <nul >nul 2> "${logFile}"`,
+        (error) => {
+          if (error) {
+            console.log('Windows bat run error:', error);
+          }
+        },
+      );
     } else {
-      exec(`bash ${process.cwd()}/dl.bash "${download.link}" "${videoFile}" "${logFile}" "${download.tracks[0] || ''}" "${download.tracks[1] || ''}"`, (error) => {
-        if (error) {
-          console.log('Linux bash run error:', error);
-        }
-      });
+      exec(
+        `bash ${process.cwd()}/dl.bash "${
+          download.link
+        }" "${videoFile}" "${logFile}" "${download.tracks[0] || ''}" "${
+          download.tracks[1] || ''
+        }"`,
+        (error) => {
+          if (error) {
+            console.log('Linux bash run error:', error);
+          }
+        },
+      );
     }
   }
 
@@ -141,7 +161,7 @@ export class DownloadService {
     //
     if (existsSync(movieDir)) {
       rmdirSync(movieDir, {
-        recursive: true
+        recursive: true,
       });
     }
   }
@@ -149,12 +169,12 @@ export class DownloadService {
   list(): IDownload[] {
     this.createMovieDirIfNotExists();
     const list: IDownload[] = [];
-    readdirSync(this.movieDir, {withFileTypes: true})
-      .filter(item => item.isDirectory())
+    readdirSync(this.movieDir, { withFileTypes: true })
+      .filter((item) => item.isDirectory())
       .map((dir) => {
         return {
           name: dir.name,
-          timestamp: statSync(`${this.movieDir}/${dir.name}`).mtime.valueOf()
+          timestamp: statSync(`${this.movieDir}/${dir.name}`).mtime.valueOf(),
         };
       })
       .sort((a, b) => b.timestamp - a.timestamp)
@@ -165,30 +185,39 @@ export class DownloadService {
           return;
         }
         const info = JSON.parse(readFileSync(infoFile).toString());
-        const progress = this.calcDownloadProgress(readFileSync(logFile).toString());
-        list.push(Object.assign(info, {
-          progress,
-          movie: `/movie/${dir.name}/${dir.name}_${info.quality || ''}.mp4`,
-          subtitle: info.subtitle ? `/movie/${dir.name}/${dir.name}.srt` : ''
-        }) as IDownload);
+        const progress = this.calcDownloadProgress(
+          readFileSync(logFile).toString(),
+        );
+        list.push(
+          Object.assign(info, {
+            progress,
+            movie: `/movie/${dir.name}/${dir.name}_${info.quality || ''}.mp4`,
+            subtitle: info.subtitle ? `/movie/${dir.name}/${dir.name}.srt` : '',
+          }) as IDownload,
+        );
       });
     return list;
   }
 
   private calcDownloadProgress(log: string): number {
     let totalDuration = 0;
-    const strTotalDuration = [...log.matchAll(/Duration: (.*), start:/g)].map(i => i[1]).pop();
+    const strTotalDuration = [...log.matchAll(/Duration: (.*), start:/g)]
+      .map((i) => i[1])
+      .pop();
     if (strTotalDuration) {
       totalDuration = this.strTimeToSeconds(strTotalDuration);
     }
     //
     let currentTime = 0;
-    const strCurrentTime = [...log.matchAll(/time=(.*) bitrate/g)].map(i => i[1]).pop();
+    const strCurrentTime = [...log.matchAll(/time=(.*) bitrate/g)]
+      .map((i) => i[1])
+      .pop();
     if (strCurrentTime) {
       currentTime = this.strTimeToSeconds(strCurrentTime);
     }
     //
-    const floatProgress = (currentTime / (totalDuration ? totalDuration : 1)) * 100;
+    const floatProgress =
+      (currentTime / (totalDuration ? totalDuration : 1)) * 100;
     const intProgress = Math.round(floatProgress);
     return intProgress > 100 ? 100 : intProgress;
   }
@@ -197,11 +226,11 @@ export class DownloadService {
     let seconds = 0;
     const timeParts = time.split(':');
     const secondText = timeParts.pop();
-    seconds += secondText ? (Number(secondText) || 0) : 0;
+    seconds += secondText ? Number(secondText) || 0 : 0;
     const minuteText = timeParts.pop();
-    seconds += minuteText ? ((Number(minuteText) || 0) * 60) : 0;
+    seconds += minuteText ? (Number(minuteText) || 0) * 60 : 0;
     const hourText = timeParts.pop();
-    seconds += hourText ? ((Number(hourText) || 0) * 60 * 60) : 0;
+    seconds += hourText ? (Number(hourText) || 0) * 60 * 60 : 0;
     return seconds;
   }
 }

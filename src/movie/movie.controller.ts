@@ -7,12 +7,10 @@ import { IMovieDownload } from '../download/download.interface';
 
 @Controller('movie')
 export class MovieController {
-
   constructor(
     private domService: DomService,
-    private downloadService: DownloadService
-  ) {
-  }
+    private downloadService: DownloadService,
+  ) {}
 
   @Post('index')
   @UseInterceptors(WrapResponseInterceptor)

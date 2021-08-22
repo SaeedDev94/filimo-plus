@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, Res, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Res,
+  UseInterceptors,
+} from '@nestjs/common';
 import { WrapResponseInterceptor } from '../shared/wrap-response.interceptor';
 import { IPlay, IPlayPayload } from './play.interface';
 import { PlayService } from './play.service';
@@ -8,16 +16,17 @@ import { ResponseType } from 'axios';
 
 @Controller('play')
 export class PlayController {
+  constructor(private playService: PlayService) {}
 
-  constructor(
-    private playService: PlayService
-  ) {
-  }
-
-  private static sendResponse(response: Response, data: string | Buffer, contentType: string, fileName: string): void {
+  private static sendResponse(
+    response: Response,
+    data: string | Buffer,
+    contentType: string,
+    fileName: string,
+  ): void {
     response.set({
       'Content-Type': contentType,
-      'Content-Disposition': `inline; filename=${fileName}`
+      'Content-Disposition': `inline; filename=${fileName}`,
     });
     response.write(data);
     response.end();
@@ -31,11 +40,17 @@ export class PlayController {
     let data: string | Buffer;
     let contentType: string;
     if (responseType === 'arraybuffer') {
-      const response = await this.playService.getData<ArrayBuffer>(url, responseType);
+      const response = await this.playService.getData<ArrayBuffer>(
+        url,
+        responseType,
+      );
       data = Buffer.from(response.data);
       contentType = response.headers['content-type'];
     } else {
-      const response = await this.playService.getData<string>(url, responseType);
+      const response = await this.playService.getData<string>(
+        url,
+        responseType,
+      );
       data = response.data;
       contentType = response.headers['content-type'];
     }
@@ -57,8 +72,14 @@ export class PlayController {
 
   @Post('hls')
   @UseInterceptors(WrapResponseInterceptor)
-  hls(@Body() payload: IPlayPayload, @Query('timestamp') timestamp: string): Promise<IPlay> {
-    return this.playService.hls(payload, timestamp || `${new Date().valueOf()}`);
+  hls(
+    @Body() payload: IPlayPayload,
+    @Query('timestamp') timestamp: string,
+  ): Promise<IPlay> {
+    return this.playService.hls(
+      payload,
+      timestamp || `${new Date().valueOf()}`,
+    );
   }
 
   @Post('file')
@@ -66,5 +87,4 @@ export class PlayController {
   file(@Body('id') id: string): IPlay {
     return this.playService.file(id);
   }
-
 }

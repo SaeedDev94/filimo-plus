@@ -14,7 +14,7 @@ import { SearchModule } from './search/search.module';
     ConfigModule.forRoot({
       isGlobal: true,
       ignoreEnvFile: true,
-      load: [urlConfig]
+      load: [urlConfig],
     }),
     AuthModule,
     HomeModule,
@@ -22,7 +22,7 @@ import { SearchModule } from './search/search.module';
     MovieModule,
     DownloadModule,
     PlayModule,
-    SearchModule
+    SearchModule,
   ],
 })
 export class AppModule {}

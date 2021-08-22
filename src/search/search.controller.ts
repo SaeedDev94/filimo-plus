@@ -5,11 +5,7 @@ import { WrapResponseInterceptor } from '../shared/wrap-response.interceptor';
 
 @Controller('search')
 export class SearchController {
-
-  constructor(
-    private searchService: SearchService
-  ) {
-  }
+  constructor(private searchService: SearchService) {}
 
   @Post('index')
   @UseInterceptors(WrapResponseInterceptor)

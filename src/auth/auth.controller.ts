@@ -1,15 +1,16 @@
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
-import { ILoginRequest, ILoginRequestPayload, ILoginVerify, ILoginVerifyPayload } from './auth.interface';
+import {
+  ILoginRequest,
+  ILoginRequestPayload,
+  ILoginVerify,
+  ILoginVerifyPayload,
+} from './auth.interface';
 import { AuthService } from './auth.service';
 import { WrapResponseInterceptor } from '../shared/wrap-response.interceptor';
 
 @Controller('auth')
 export class AuthController {
-
-  constructor(
-    private authService: AuthService
-  ) {
-  }
+  constructor(private authService: AuthService) {}
 
   @Post('step/one')
   @UseInterceptors(WrapResponseInterceptor)

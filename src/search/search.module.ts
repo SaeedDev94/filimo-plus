@@ -4,14 +4,8 @@ import { SharedModule } from '../shared/shared.module';
 import { SearchService } from './search.service';
 
 @Module({
-  imports: [
-    SharedModule
-  ],
-  controllers: [
-    SearchController
-  ],
-  providers: [
-    SearchService
-  ]
+  imports: [SharedModule],
+  controllers: [SearchController],
+  providers: [SearchService],
 })
 export class SearchModule {}

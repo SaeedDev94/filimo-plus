@@ -5,11 +5,7 @@ import { WrapResponseInterceptor } from '../shared/wrap-response.interceptor';
 
 @Controller('download')
 export class DownloadController {
-
-  constructor(
-    private downloadService: DownloadService
-  ) {
-  }
+  constructor(private downloadService: DownloadService) {}
 
   @Post('request')
   @UseInterceptors(WrapResponseInterceptor)

@@ -5,15 +5,8 @@ import { DownloadModule } from '../download/download.module';
 import { PlayService } from './play.service';
 
 @Module({
-  imports: [
-    SharedModule,
-    DownloadModule
-  ],
-  controllers: [
-    PlayController
-  ],
-  providers: [
-    PlayService
-  ]
+  imports: [SharedModule, DownloadModule],
+  controllers: [PlayController],
+  providers: [PlayService],
 })
 export class PlayModule {}
