@@ -17,7 +17,6 @@ import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class DomService {
-  private episodeLinkElement: any;
   constructor(private http: HttpService, private config: ConfigService) {}
 
   private getDocument(html: string): Document {
@@ -49,9 +48,8 @@ export class DomService {
       const descriptionElement: Element = item.querySelector(
         '.ds-thumb_content_bottom',
       );
-      descriptionElement.removeChild(
-        descriptionElement.querySelector('.ds-badges'),
-      );
+      const badgesElement = descriptionElement.querySelector('.ds-badges');
+      if (badgesElement) descriptionElement.removeChild(badgesElement);
       data.push({
         id: item.getAttribute('data-uid'),
         image: imageElement.getAttribute('data-src'),
