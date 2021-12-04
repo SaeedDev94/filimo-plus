@@ -1,3 +1,9 @@
+# EOL
+
+This app contains backend and frontend with many features<br />
+So the maintenance process isn't easy and needs much more time compare to cli version<br />
+You can use my new repo as an alternative: [`filimo-plus-cli`](https://github.com/Saeed-Pooyanfar/filimo-plus-cli)
+
 # FilimoPlus
 
 ![Image](filimo_plus.png)
